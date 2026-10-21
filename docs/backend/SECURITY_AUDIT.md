@@ -26,8 +26,9 @@ These need a function-by-function review of function body, intended caller, gran
 - Added a shared `src/services/` layer for auth, profiles, posts, comments, follows, videos, communities, events, messages, notifications, search, recommendations, uploads, analytics and request handling.
 - Auth flows in `src/App.tsx` now call the shared auth service; session restore and sign-out errors are surfaced through friendly error handling.
 - Service queries use the existing schema where verified. Analytics is best-effort until a dedicated analytics table is added through a reviewed migration.
-- Added owner-scoped `post_drafts` and `analytics_events` tables with RLS and explicit authenticated grants.
+- Added owner-scoped `post_drafts`, `analytics_events`, and `post_saves` tables with RLS and explicit authenticated grants.
 - Added `stories` and `user_notes` tables with expiry-aware reads and owner-only writes; story visibility respects follower relationships, private-account visibility, and blocks.
+- Added `scripts/seed-demo.mjs`, a guarded server-side seed script that requires an explicit `ALLOW_DEMO_SEED=true` flag and a server-only service-role key.
 - Added `message_requests` with sender/recipient-scoped policies and recipient-only accept/decline updates.
 - Added community `rules`, `topics`, `cover_url`, and `updated_at` metadata.
 - Revoked anonymous execution of `admin_set_profile_verified` while retaining authenticated execution for its internal admin permission check. Revoked direct RPC execution of the trigger-only `enforce_vibely_publication_permissions()` function; trigger behavior remains intact.
