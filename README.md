@@ -60,6 +60,19 @@ The Phase A migrations add owner-scoped `post_drafts` and `analytics_events`, ex
 
 Copy `.env.example` to `.env.local` and set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`. The publishable key is intended for client use; never use a service-role/secret key in the browser or APK.
 
+### Seed realistic demo data (server-side only)
+
+The guarded seed script is `scripts/seed-demo.mjs`. Run it only against a project where demo content is wanted, from a local terminal or trusted server environment:
+
+```bash
+SUPABASE_URL="https://YOUR_PROJECT.supabase.co" \
+SUPABASE_SERVICE_ROLE_KEY="YOUR_SERVER_ONLY_SERVICE_ROLE_KEY" \
+ALLOW_DEMO_SEED=true \
+node scripts/seed-demo.mjs
+```
+
+The script creates or reuses two demo profiles, sample posts, follows, a community, a community post, a comment, a like, and a 24-hour note. It uses the service-role key, so **never** add that key to `.env.local` variables prefixed with `NEXT_PUBLIC_`, GitHub Pages, or the Android client. The safety flag is required to avoid accidental seeding.
+
 ### Verification
 
 Run `npm run lint` and `npm run build` before shipping changes. Feature phases should also include a manual authenticated-user check and a cross-user RLS check for any new or changed data path.
