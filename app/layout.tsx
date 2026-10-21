@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: 'vibe.ly — Find Your People. Feel the Vibe.',
   description: 'Discover people, share your moments, and find your local community on vibe.ly.',
   applicationName: 'vibe.ly',
+  icons: { icon: '/icon.svg', apple: '/icon.svg' },
   manifest: '/manifest.webmanifest',
   appleWebApp: { capable: true, statusBarStyle: 'default', title: 'vibe.ly' },
 };
