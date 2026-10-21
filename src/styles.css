@@ -514,3 +514,11 @@
 .mobilefoot .create-tab small{position:absolute;top:49px;color:var(--text,#32264b);font-weight:700}
 .mobile-badge{position:absolute;top:1px;right:calc(50% - 25px);min-width:16px;height:16px;font-size:9px;border:2px solid var(--surface,#fff)}
 @media(max-width:520px){.mobilefoot{gap:2px;padding-inline:8px}.mobilefoot button{gap:3px}.mobilefoot .create-tab{margin-bottom:7px}.mobilefoot .create-tab small{top:48px}}
+
+/* Account-backed drafts and scheduled-post metadata */
+.drafts-panel{margin:22px 0;padding:20px;border:1px solid var(--border,#e7def5);border-radius:20px;background:var(--surface,#fff);box-shadow:0 8px 28px #4b2a8010}
+.drafts-empty{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;padding:28px 14px;border:1px dashed var(--border,#e7def5);border-radius:15px;color:var(--muted,#766b87);text-align:center}
+.drafts-list{display:grid;gap:10px}.draft-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px;border:1px solid var(--border,#eee7f8);border-radius:14px;background:var(--surface-soft,#faf8ff)}
+.draft-row-copy{min-width:0;flex:1}.draft-row-copy b,.draft-row-copy small{display:block}.draft-row-copy small{margin-top:5px;color:var(--muted,#766b87);font-size:11px}.draft-row-copy p{margin:8px 0 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}
+.draft-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:7px}.draft-actions>button{display:inline-flex;align-items:center;gap:5px;padding:8px 10px;border:1px solid var(--border,#e7def5);border-radius:10px;background:var(--surface,#fff);color:var(--text,#33264d);font-size:11px;font-weight:700}.draft-schedule-field{display:flex;align-items:center;gap:5px;padding:5px 7px;border:1px solid var(--border,#e7def5);border-radius:10px;background:var(--surface,#fff)}.draft-schedule-field input{max-width:180px;border:0;background:transparent;color:inherit;font-size:11px;min-width:0}.drafts-note{margin:12px 0 0;color:var(--muted,#766b87);font-size:11px;line-height:1.5}
+@media(max-width:640px){.draft-row{flex-direction:column}.draft-actions{justify-content:flex-start}.draft-schedule-field input{max-width:100%}}
