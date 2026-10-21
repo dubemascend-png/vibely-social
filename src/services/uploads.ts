@@ -1,5 +1,5 @@
 import { supabase } from '../supabase';
-import { throwIfError } from './request';
+import { toServiceError } from './request';
 
 export type UploadProgress = (percent: number) => void;
 export async function uploadUserMedia(input: { userId: string; file: File; bucket: string; folder?: string; onProgress?: UploadProgress }) {
@@ -10,13 +10,15 @@ export async function uploadUserMedia(input: { userId: string; file: File; bucke
   // Supabase JS does not expose byte-by-byte progress for standard upload; report stages honestly.
   input.onProgress?.(5);
   const { data, error } = await supabase.storage.from(input.bucket).upload(path, input.file, { upsert: false, contentType: input.file.type || undefined });
-  throwIfError(error);
+  if (error) throw toServiceError(error);
+  if (!data) throw new Error('Upload finished without a storage result. Please try again.');
   input.onProgress?.(100);
   return { ...data, bucket: input.bucket };
 }
 export async function createSignedMediaUrl(bucket: string, path: string, expiresInSeconds = 3600) {
   const ttl = Math.min(86400, Math.max(60, expiresInSeconds));
   const { data, error } = await supabase.storage.from(bucket).createSignedUrl(path, ttl);
-  throwIfError(error);
+  if (error) throw toServiceError(error);
+  if (!data?.signedUrl) throw new Error('Could not create a secure media link.');
   return data.signedUrl;
 }
