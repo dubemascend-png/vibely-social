@@ -19,6 +19,7 @@ export async function createPoll(authorId: string, question: string, optionLabel
   if (!cleanQuestion || cleanQuestion.length > 500 || options.length < 2) throw new Error('Add a question and at least two different options.');
   const { data, error } = await supabase.from('content_polls').insert({ author_id: authorId, question: cleanQuestion }).select('id,question,created_at,closes_at').single();
   throwIfError(error);
+  if (!data) throw new Error('Poll was not created. Please try again.');
   const inserted = await supabase.from('poll_options').insert(options.map((option_text, position) => ({ poll_id: data.id, option_text, position })));
   if (inserted.error) {
     await supabase.from('content_polls').delete().eq('id', data.id).eq('author_id', authorId);
