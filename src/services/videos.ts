@@ -23,3 +23,9 @@ export async function recordPlayback(userId: string, postId: string, eventType: 
   const { error } = await supabase.from('video_playback_events').insert({ user_id: userId, post_id: postId, event_type: eventType, event_key: crypto.randomUUID(), position_seconds: Math.max(0, positionSeconds), duration_seconds: Math.max(0, durationSeconds) });
   throwIfError(error);
 }
+
+export async function listVideoLibrary(userId: string, collectionType: 'watch_later' | 'history' = 'watch_later', limit = 100) {
+  const { data, error } = await supabase.from('video_library_items').select('post_id,last_position_seconds,updated_at,watched_at').eq('user_id', userId).eq('collection_type', collectionType).order('updated_at', { ascending: false }).limit(Math.min(200, Math.max(1, limit)));
+  throwIfError(error);
+  return data ?? [];
+}
