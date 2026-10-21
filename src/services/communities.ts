@@ -42,3 +42,14 @@ export async function deleteOwnCommunityPost(postId: string, authorId: string) {
   const { error } = await supabase.from('community_posts').delete().eq('id', postId).eq('author_id', authorId);
   throwIfError(error);
 }
+
+export async function listPublicCommunities(limit = 60) {
+  const { data, error } = await supabase.from('communities').select('id,name,slug,description,privacy,created_at').eq('privacy', 'public').order('created_at', { ascending: false }).limit(Math.min(100, Math.max(1, limit)));
+  throwIfError(error);
+  return data ?? [];
+}
+export async function listCommunityMembershipIds(userId: string) {
+  const { data, error } = await supabase.from('community_members').select('community_id').eq('user_id', userId);
+  throwIfError(error);
+  return (data ?? []).map(row => row.community_id);
+}
