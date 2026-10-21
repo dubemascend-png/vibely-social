@@ -4,7 +4,6 @@ import { BarChart3, CheckCircle2, Clapperboard, FileVideo, Lightbulb, Sparkles, 
 import type { VibeVideoPost } from './videoTypes';
 import { videoAI } from './videoServices';
 import { supabase } from '../supabase';
-import { supabase } from '../supabase';
 export default function CreatorStudio({posts,onCreate,currentUserId}:{posts:VibeVideoPost[];onCreate:()=>void;currentUserId:string}){
  const [draft,setDraft]=useState('');const [showIdeas,setShowIdeas]=useState(false);const [playback,setPlayback]=useState<{views:number;completions:number;watchSeconds:number}>({views:0,completions:0,watchSeconds:0});const [playbackByPost,setPlaybackByPost]=useState<Record<string,{views:number;completions:number;watchSeconds:number}>>({});const [analytics,setAnalytics]=useState<Record<string,{play_starts:number;completions:number;completed_video_seconds:number;unique_viewers:number}>>({});const [analyticsError,setAnalyticsError]=useState('');
  const own=useMemo(()=>posts.filter(p=>p.author_id===currentUserId),[posts,currentUserId]);
