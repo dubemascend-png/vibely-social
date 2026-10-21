@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Bell, CheckCircle2, ChevronDown, Clock3, Compass, Film, Flame, Gamepad2, GraduationCap, Heart, History, Home, ListVideo, MoreVertical, Music2, Play, Plus, Search, Share2, ThumbsDown, Video, X } from 'lucide-react';
+import { CheckCircle2, ChevronDown, Clock3, Compass, Film, Flame, Gamepad2, GraduationCap, Heart, ListVideo, MoreVertical, Music2, Play, Plus, Search, Share2, ThumbsDown, Video, X } from 'lucide-react';
 
 type VideoProfile = { id: string; username?: string | null; display_name?: string | null; avatar_url?: string | null; is_verified?: boolean };
 type VideoPost = { id: string; author_id: string; caption: string | null; media_url: string | null; media_type: string | null; created_at: string; profiles?: VideoProfile; likes?: { user_id: string }[]; comments?: { id: string; body: string; author_id: string }[] };
