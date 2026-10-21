@@ -357,3 +357,6 @@
 .vs-story-people{display:flex;gap:16px;overflow:auto;padding:8px 0}.vs-story-people button{display:grid;justify-items:center;gap:6px;border:0;background:transparent;color:#5e5874;font-size:11px}.vs-story-people button span{display:grid;place-items:center;width:56px;height:56px;border-radius:50%;outline:3px solid #25d366;outline-offset:3px;font-size:25px}.vs-story-people button:nth-child(n+2) span{outline-color:#b7b4c0}.vs-story-people button b{font-size:11px}.vs-story-people button small{font-size:9px;color:#9690a8}
 @media(max-width:760px){.message-more-actions{opacity:1;background:transparent;box-shadow:none}.message-action-menu{right:4px}.bubble-row.theirs .message-action-menu{left:4px}.message-scroll-bottom{right:12px;bottom:84px}.message-quick-replies{padding-left:8px}.message-quick-replies button{font-size:10px}.message-date-chip{top:4px}}
 @media(prefers-reduced-motion:reduce){.message-history{scroll-behavior:auto}.message-more-actions{transition:none}}
+
+
+.queued-message .bubble{background:#f3efff!important;border:1px dashed #bcb0ed;color:#4f466e}.queued-message .message-meta{display:flex;align-items:center;gap:5px;color:#8a7dc1}.queued-message .message-meta svg{color:#8a7dc1}
