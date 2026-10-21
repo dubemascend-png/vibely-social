@@ -360,3 +360,8 @@
 
 
 .queued-message .bubble{background:#f3efff!important;border:1px dashed #bcb0ed;color:#4f466e}.queued-message .message-meta{display:flex;align-items:center;gap:5px;color:#8a7dc1}.queued-message .message-meta svg{color:#8a7dc1}
+
+
+.message-reaction-chip{display:inline-flex;align-items:center;justify-content:center;margin:4px 4px 0 0;min-width:24px;height:23px;padding:0 7px;border:1px solid #e8e0ff;border-radius:999px;background:#fff;color:#7657d9;font-size:12px;box-shadow:0 1px 2px #0000000b}
+.vs-story-progress span{background:#ffffff70;transition:background .18s}.vs-story-progress span.complete,.vs-story-progress span.current{background:#fff}
+.bubble-row{position:relative}
