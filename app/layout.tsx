@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import type { ReactNode } from 'react';
 import './globals.css';
 import '../src/styles.css';
 
@@ -15,6 +16,6 @@ export const viewport: Viewport = {
   viewportFit: 'cover',
   themeColor: '#7257ff',
 };
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return <html lang="en"><body>{children}</body></html>;
 }
