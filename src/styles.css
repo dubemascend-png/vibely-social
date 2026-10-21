@@ -288,3 +288,11 @@
 .messaging .conversation-unread{display:inline-flex;min-width:20px;height:20px;padding:0 5px;align-items:center;justify-content:center;border-radius:999px;background:#25d366;color:#073d2d;font-size:10px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
 .messaging.messaging-dark .conversation-unread{background:#25d366;color:#063b2b}
 @media(max-width:390px){.messaging .conversation-trailing{gap:6px}.messaging .conversation-unread{min-width:18px;height:18px;font-size:9px}}
+
+.messaging .message-compose textarea{flex:1;min-width:0;min-height:44px;max-height:136px;resize:none;overflow-y:auto;border:1px solid transparent;border-radius:22px;padding:12px 17px;background:#fff;font:400 14px/1.45 Inter,"Segoe UI",sans-serif;color:var(--chat-text);box-shadow:0 1px 2px #122b2010;transition:border-color .18s ease,box-shadow .18s ease}
+.messaging .message-compose textarea:focus{border-color:#8dcbb9;box-shadow:0 0 0 3px #008f7018}
+.messaging .message-compose textarea::placeholder{color:#7e8b88}
+.messaging.messaging-dark .message-compose textarea{background:#2a3940;color:#e9edef;border-color:#2a3940}
+.messaging.messaging-dark .message-compose textarea::placeholder{color:#aebac1}
+.messaging.messaging-dark .message-compose textarea:focus{border-color:#527c70}
+@media(max-width:760px){.messaging .message-compose textarea{min-height:42px;padding:11px 14px;font-size:14px}}
