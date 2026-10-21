@@ -29,6 +29,8 @@ These need a function-by-function review of function body, intended caller, gran
 - Added owner-scoped `post_drafts`, `analytics_events`, and `post_saves` tables with RLS and explicit authenticated grants.
 - Added `stories` and `user_notes` tables with expiry-aware reads and owner-only writes; story visibility respects follower relationships, private-account visibility, and blocks.
 - Added `scripts/seed-demo.mjs`, a guarded server-side seed script that requires an explicit `ALLOW_DEMO_SEED=true` flag and a server-only service-role key.
+- Extended the permission-checked admin dashboard summary with aggregate counts for videos, communities, messages, open reports, pending appeals, message requests, and active stories.
+- Enabled RLS and added an explicit active-admin permission policy for reading the latest audit log entries from the admin site.
 - Added `message_requests` with sender/recipient-scoped policies and recipient-only accept/decline updates.
 - Added community `rules`, `topics`, `cover_url`, and `updated_at` metadata.
 - Revoked anonymous execution of `admin_set_profile_verified` while retaining authenticated execution for its internal admin permission check. Revoked direct RPC execution of the trigger-only `enforce_vibely_publication_permissions()` function; trigger behavior remains intact.
