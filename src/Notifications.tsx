@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Bell, Heart, MessageCircle, UserPlus, CheckCheck, LoaderCircle, ArrowUpRight } from 'lucide-react';
 import { supabase } from './supabase';
 type Actor={display_name:string|null;username:string|null;avatar_url:string|null};
