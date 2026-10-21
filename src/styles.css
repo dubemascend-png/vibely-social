@@ -546,3 +546,35 @@
 @media(max-width:520px){.home-feed-sectionhead{align-items:flex-start;flex-direction:column}.home-feed-tabs{width:100%}.home-feed-tabs button{flex:1}}
 
 .profile-content-tabs{display:flex;gap:5px;overflow-x:auto;margin:8px 0 12px;padding:4px;border-radius:13px;background:#f5f1fc;scrollbar-width:none}.profile-content-tabs button{display:flex;align-items:center;justify-content:center;gap:6px;flex:1;min-width:max-content;border:0;border-radius:9px;background:transparent;color:#887c9e;padding:9px 11px;font-size:10px;font-weight:800}.profile-content-tabs button.active{background:#fff;color:#6845c8;box-shadow:0 2px 8px #44286612}.profile-content-tabs button small{font-size:8px;color:#8f7bd1;background:#f0eaff;border-radius:999px;padding:3px 5px}.postactions button.saved{color:#7650d8;font-weight:800}
+
+/* Global dark mode; lavender accents remain consistent across Vibe.ly */
+.theme-switch{display:grid;place-items:center;width:38px;height:38px;border:1px solid var(--border,#eee7f8);border-radius:13px;background:var(--surface,#fff);color:var(--text,#594775);position:relative}
+html[data-theme="dark"]{color-scheme:dark;background:#15121d;color:#f2edff}
+html[data-theme="dark"] body{background:#15121d;color:#f2edff}
+html[data-theme="dark"] .app{background:#15121d;color:#f2edff}
+html[data-theme="dark"] .topbar,html[data-theme="dark"] .sidebar,html[data-theme="dark"] .composer,html[data-theme="dark"] .post,html[data-theme="dark"] .profile,html[data-theme="dark"] .rail,html[data-theme="dark"] .person,html[data-theme="dark"] .discover-section,html[data-theme="dark"] .drafts-panel,html[data-theme="dark"] .community-card,html[data-theme="dark"] .community-rules-card,html[data-theme="dark"] .community-create,html[data-theme="dark"] .studio-card{background:#211c2b;color:#f2edff;border-color:#3d344d}
+html[data-theme="dark"] .topbar{box-shadow:0 3px 18px #0003}
+html[data-theme="dark"] .sidebar{background:#1c1826}
+html[data-theme="dark"] .navitem{color:#bcb1d0}
+html[data-theme="dark"] .navitem.active,html[data-theme="dark"] .home-feed-tabs button.active,html[data-theme="dark"] .profile-content-tabs button.active{background:#392b54;color:#e9ddff}
+html[data-theme="dark"] .navitem:hover{background:#30263f}
+html[data-theme="dark"] .topbell,html[data-theme="dark"] .theme-switch{background:#2a2337;border-color:#443854;color:#e8dcff}
+html[data-theme="dark"] .home-feed-tabs,html[data-theme="dark"] .profile-content-tabs,html[data-theme="dark"] .content-filters,html[data-theme="dark"] .message-inbox-tabs{background:#1a1723;border-color:#3c334c}
+html[data-theme="dark"] .home-feed-tabs button,html[data-theme="dark"] .profile-content-tabs button,html[data-theme="dark"] .content-filters button,html[data-theme="dark"] .message-inbox-tabs button{color:#b7a9cc}
+html[data-theme="dark"] .search,html[data-theme="dark"] .message-search,html[data-theme="dark"] input,html[data-theme="dark"] textarea,html[data-theme="dark"] select{background:#1b1724;color:#f1eaff;border-color:#443852}
+html[data-theme="dark"] .search input,html[data-theme="dark"] .message-search input{background:transparent;color:#f1eaff}
+html[data-theme="dark"] .post p,html[data-theme="dark"] .post h3,html[data-theme="dark"] .sectionhead h2,html[data-theme="dark"] .discover-section-head h2,html[data-theme="dark"] .discover-trending-copy p,html[data-theme="dark"] .discover-community-grid b,html[data-theme="dark"] .discover-event-list b{color:#f0eaff}
+html[data-theme="dark"] .post small,html[data-theme="dark"] .post time,html[data-theme="dark"] .sectionhead p,html[data-theme="dark"] .discover-section-head p,html[data-theme="dark"] .discover-trending-copy small,html[data-theme="dark"] .discover-trending-copy>span{color:#b4a7c8}
+html[data-theme="dark"] .discover-topic-row button,html[data-theme="dark"] .discover-community-grid article,html[data-theme="dark"] .discover-trending-card,html[data-theme="dark"] .discover-event-list article,html[data-theme="dark"] .draft-row,html[data-theme="dark"] .draft-actions>button{background:#272132;color:#e8dfff;border-color:#40354f}
+html[data-theme="dark"] .discover-topic-row button.active,html[data-theme="dark"] .discover-hashtags button{background:#352847;color:#dfd1ff;border-color:#5a4677}
+html[data-theme="dark"] .discover-hashtags b,html[data-theme="dark"] .discover-community-grid small,html[data-theme="dark"] .discover-event-date{color:#d6c2ff}
+html[data-theme="dark"] .discover-section-empty,html[data-theme="dark"] .discover-community-grid p,html[data-theme="dark"] .discover-event-list small,html[data-theme="dark"] .draft-row-copy small,html[data-theme="dark"] .draft-row-copy p,html[data-theme="dark"] .drafts-note{color:#b7a9ca}
+html[data-theme="dark"] .stories button,html[data-theme="dark"] .stories{color:#e8dfff}
+html[data-theme="dark"] .empty{background:#211c2b;border-color:#3d344d;color:#e8dfff}
+html[data-theme="dark"] .profile-content-tabs button small{background:#352847;color:#d6c2ff}
+html[data-theme="dark"] .community-rules-card>p,html[data-theme="dark"] .community-rules-card ol{color:#c1b5d3}
+html[data-theme="dark"] .community-rules-card h2,html[data-theme="dark"] .community-rules-card h3{color:#f2edff}
+html[data-theme="dark"] .community-create select{background:#1b1724;color:#f1eaff;border-color:#443852}
+html[data-theme="dark"] .mobilefoot{background:#1d1828;border-color:#3b304a}
+html[data-theme="dark"] .mobilefoot .create-tab small{color:#f2edff}
+@media(prefers-reduced-motion:reduce){html[data-theme="dark"] *{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important}}
