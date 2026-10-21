@@ -16,7 +16,7 @@ export function subscribeToAuthChanges(callback: (event: AuthChangeEvent, sessio
 }
 
 export async function signIn(email: string, password: string): Promise<User> {
-  const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+  const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim().toLowerCase(), password });
   if (error) throw toServiceError(error);
   if (!data.user) throw new Error('Sign in did not return a user. Please try again.');
   return data.user;
@@ -28,13 +28,13 @@ export async function signUp(email: string, password: string, displayName: strin
     password,
     options: { data: { display_name: displayName.trim() || email.split('@')[0] }, emailRedirectTo: getAppRedirectUrl() },
   };
-  const { data, error } = await supabase.auth.signUp(credentials);
+  const { data, error } = await supabase.auth.signUp({ ...credentials, email: email.trim().toLowerCase() });
   if (error) throw toServiceError(error);
   return { user: data.user, needsEmailConfirmation: !data.session };
 }
 
 export async function requestPasswordReset(email: string): Promise<void> {
-  const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), { redirectTo: getAppRedirectUrl() });
+  const { error } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), { redirectTo: getAppRedirectUrl() });
   if (error) throw toServiceError(error);
 }
 
