@@ -673,3 +673,11 @@ html[data-theme="dark"] .authform input{background:linear-gradient(145deg,#1b172
 html[data-theme="dark"] .authform input::placeholder{color:#9488a8}
 html[data-theme="dark"] .ui-card,html[data-theme="dark"] .ui-sheet{background:var(--surface-raised);border-color:var(--border-subtle);color:var(--text-primary)}
 @media(prefers-reduced-motion:reduce){.ui-button,.ui-input,.ui-empty__spark,.ui-skeleton,.ui-sheet{animation:none!important;transition:none!important}.ui-button:active{transform:none}}
+
+.auth-password-wrap{position:relative;display:block;margin-top:8px}
+.authform .auth-password-wrap input{margin-top:0;padding-right:52px}
+.auth-password-toggle{position:absolute;right:7px;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:40px;height:40px;border:0;border-radius:11px;background:transparent;color:#8a7ca8}
+.auth-password-toggle:hover{background:#eee8ff;color:#6345ef}
+.auth-password-toggle:focus-visible{outline:3px solid #a18cff;outline-offset:1px}
+html[data-theme="dark"] .auth-password-toggle{color:#c0b1dd}
+html[data-theme="dark"] .auth-password-toggle:hover{background:#392b54;color:#e9ddff}
