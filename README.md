@@ -1,6 +1,6 @@
 # vibe.ly — Find Your People. Feel the Vibe.
 
-Mobile-first social platform using React, TypeScript, Vite, and Supabase as the current implementation foundation. The roadmap documents a planned migration to Next.js for web and Expo/React Native for Android/iOS. This repository and backend are separate from eCuisine.
+Mobile-first social platform using Next.js App Router, React, TypeScript, Tailwind CSS, and Supabase. The Vite entry remains as a temporary fallback while the Next.js path becomes the primary web app. This repository and backend are separate from eCuisine.
 
 ## Current working features
 - Email/password sign-up and sign-in with Supabase Auth
