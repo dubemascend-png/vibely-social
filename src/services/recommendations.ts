@@ -1,9 +1,9 @@
 import { supabase } from '../supabase';
 import { throwIfError } from './request';
 
-export async function recordRecommendationFeedback(userId: string, postId: string, action: 'not_interested' | 'show_less' | 'like' | 'save' | 'share' | 'follow' | 'hide' | 'dismiss') {
+export async function recordRecommendationFeedback(userId: string, postId: string | null, action: 'not_interested' | 'show_less' | 'like' | 'save' | 'share' | 'follow' | 'hide' | 'dismiss', targetUserId?: string) {
   const feedback = action === 'not_interested' ? 'not_relevant' : action;
-  const { error } = await supabase.from('recommendation_feedback').insert({ user_id: userId, post_id: postId, feedback });
+  const { error } = await supabase.from('recommendation_feedback').insert({ user_id: userId, post_id: postId, target_user_id: targetUserId ?? null, feedback });
   throwIfError(error);
 }
 export async function recordRecommendationEvent(userId: string, postId: string, eventType: 'impression' | 'open' | 'watch' | 'like' | 'save' | 'share' | 'follow' | 'hide' | 'skip' | 'report', metadata: Record<string, unknown> = {}) {
