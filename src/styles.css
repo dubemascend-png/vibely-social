@@ -66,3 +66,35 @@
 
 /* Restricted-account appeal screen */
 .restriction-screen{min-height:100vh;display:grid;place-items:center;padding:28px 16px;background:radial-gradient(ellipse at 50% 0%,#eee8ff 0%,#f7f6fb 58%)}.restriction-card{width:min(100%,520px);padding:clamp(24px,5vw,44px);background:#fff;border:1px solid #eeeaf8;border-radius:26px;box-shadow:0 24px 80px #3b286012;text-align:center}.restriction-brand{display:flex;align-items:center;justify-content:center;gap:9px;font:700 27px 'Dancing Script',cursive;margin:12px 0 28px}.sad-emoji{width:132px;height:132px;margin:0 auto 6px;display:grid;place-items:center;font-size:91px;line-height:1;border-radius:42px;background:linear-gradient(145deg,#fff0e8,#ffe0e8 50%,#e9e1ff);box-shadow:inset 0 3px 9px #fff,0 16px 30px #8b5b8422;transform:rotate(-3deg);filter:drop-shadow(0 7px 0 #f1d9df);animation:sad-float 3.2s ease-in-out infinite}.restriction-eyebrow{font-size:9px;font-weight:800;letter-spacing:1.7px;color:#a19ab5}.restriction-card h1{font:800 clamp(28px,5vw,37px) Manrope;letter-spacing:-1.3px;color:#302a43;margin:12px 0}.restriction-message{font-size:14px;font-weight:700;line-height:1.75;color:#65566f;margin:0 auto 12px;max-width:370px}.restriction-detail{font-size:12px;line-height:1.8;color:#91899f;margin:0 auto 12px;max-width:390px}.appeal-form{text-align:left;margin-top:25px;padding:20px;background:#faf9fe;border:1px solid #eeeaf8;border-radius:16px}.appeal-form h2{font:800 16px Manrope;margin:0 0 7px;color:#302a43}.appeal-form p{font-size:11px;line-height:1.7;color:#8d869e;margin:0 0 16px}.appeal-form label{display:block;font-size:11px;font-weight:800;color:#5c536f;margin-bottom:7px}.appeal-form textarea{display:block;width:100%;resize:vertical;min-height:110px;border:1px solid #e4deef;border-radius:11px;background:white;padding:12px;font-size:12px;line-height:1.6;color:#302a43;outline:none}.appeal-form textarea:focus{border-color:#aa99ff;box-shadow:0 0 0 3px #eee9ff}.appeal-form small{display:block;text-align:right;color:#a29bb1;font-size:9px;margin:6px 0 14px}.appeal-pending{margin:24px 0 8px;padding:18px;border:1px solid #cfeee1;border-radius:14px;background:#f0fbf6;color:#267553}.appeal-pending>span{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#d7f6e8;margin:0 auto 8px;font-weight:900}.appeal-pending b{font-size:13px}.appeal-pending p{font-size:11px;line-height:1.7;color:#56836f;margin:7px 0 0}.restriction-signout{border:0;background:none;color:#776d8d;font-size:11px;font-weight:700;padding:13px;margin-top:7px}.restriction-foot{font-size:9px;line-height:1.6;color:#b0a9bd;margin:12px 0 0}@keyframes sad-float{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-5px) rotate(2deg)}}
+
+
+/* Vibe.ly creator tools and video discovery */
+.upload-options{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.upload-status{margin:12px 0 0 54px;color:#7257ff;font-size:12px;font-weight:700}
+.carousel-preview{display:flex;gap:8px;overflow-x:auto;padding:6px}
+.carousel-preview img{width:auto;max-width:72%;height:180px;object-fit:contain;border-radius:10px;background:#f6f4fb}
+.post-carousel{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;padding:3px 0 10px}
+.post-carousel img{flex:0 0 min(84%,520px);width:auto;max-height:520px;object-fit:contain;scroll-snap-align:center;background:#f5f3fa;border-radius:12px}
+.draft-save{border:0;background:transparent;color:#8067e9;font-size:11px;padding:6px 0;align-self:flex-start}
+.creator-hub{background:#fff;border:1px solid #efedf5;border-radius:20px;padding:clamp(20px,4vw,36px);box-shadow:0 8px 30px #2e225307}
+.creator-hub h1{font:800 clamp(28px,4vw,40px)/1.12 Manrope;letter-spacing:-1.4px;margin:12px 0}
+.creator-hub h1 em{font-style:normal;color:#7257ff}
+.creator-hub>p{font-size:13px;line-height:1.7;color:#89839a;max-width:560px}
+.creator-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:25px 0}
+.creator-grid button{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:8px;min-height:132px;padding:17px;border:1px solid #ece8fa;border-radius:15px;background:linear-gradient(145deg,#fff,#faf8ff);color:#302a47;transition:transform .15s,border-color .15s}
+.creator-grid button:hover{transform:translateY(-2px);border-color:#b9aaff}
+.creator-grid button>span{font-size:26px}
+.creator-grid button b{font-size:13px}
+.creator-grid button small{font-size:11px;line-height:1.5;color:#928ba5}
+.vibes-page{min-width:0}
+.vibes-feed{display:grid;gap:18px}
+.vibe-card{position:relative;overflow:hidden;background:#100d19;border-radius:18px;min-height:360px;isolation:isolate}
+.vibe-player{display:block;width:100%;height:min(72vh,720px);min-height:360px;object-fit:contain;background:#100d19}
+.vibe-overlay{position:absolute;left:0;right:0;bottom:0;padding:52px 18px 16px;background:linear-gradient(transparent,#100d19e8);color:white;pointer-events:none}
+.vibe-overlay b{font-size:14px}
+.vibe-overlay p{font-size:13px;line-height:1.5;max-width:80%;white-space:pre-wrap;overflow-wrap:anywhere}
+.vibe-overlay button{pointer-events:auto;border:1px solid #ffffff4a;background:#171329a8;color:white;border-radius:20px;padding:8px 11px;margin-right:8px;display:inline-flex;align-items:center;gap:6px;font-size:12px}
+.vibe-card .comments{background:#fff;padding:14px}
+.mobilefoot button{min-width:0}
+@media(max-width:700px){.creator-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.creator-grid button{min-height:120px;padding:13px}.creator-hub{padding:19px}.upload-options{gap:10px}.vibe-player{height:68vh;min-height:320px}.vibe-card{border-radius:14px}.post-carousel img{flex-basis:88%;max-height:420px}}
+@media(prefers-reduced-motion:reduce){.creator-grid button{transition:none}.creator-grid button:hover{transform:none}}
