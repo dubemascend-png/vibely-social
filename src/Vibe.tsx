@@ -98,6 +98,6 @@ export default function Vibe({ posts, onCreate, onLike, onComment, onPlay, onCom
       </div>}
     <div className="vibe-video-footer-note"><span><Heart size={14}/> Made for your interests</span><span>Recommendations are a starter ranking based on available likes and comments. // TODO: connect backend for watch-time and satisfaction signals.</span></div>
     </>}
-    {selectedVideo && <VideoWatch video={selectedVideo} posts={posts.filter(p=>p.media_type==='video'&&!!p.media_url)} onClose={()=>setSelectedVideo(null)} onSelect={setSelectedVideo} onLike={onLike} onComment={onComment} onPlay={onPlay} onComplete={onComplete} onProfileVisit={onProfileVisit}/ >}
+    {selectedVideo && <VideoWatch video={selectedVideo} posts={posts.filter(p=>p.media_type==='video'&&!!p.media_url)} onClose={()=>setSelectedVideo(null)} onSelect={setSelectedVideo} onLike={onLike} onComment={onComment} onPlay={onPlay} onComplete={onComplete} onProfileVisit={onProfileVisit}/>}
   </section>;
 }
