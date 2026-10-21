@@ -1,17 +1,15 @@
 {
-  "name": "vibe.ly — Find Your People",
-  "short_name": "vibe.ly",
-  "description": "Find Your People. Feel the Vibe.",
-  "start_url": "/",
+  "id": "/vibely-social/",
+  "name": "Vibe.ly — Social Media",
+  "short_name": "Vibe.ly",
+  "description": "Find your people, share moments, chat, and make connections.",
+  "start_url": "/vibely-social/",
+  "scope": "/vibely-social/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#f7f6fb",
   "theme_color": "#7257ff",
   "icons": [
-    {
-      "src": "/icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
+    { "src": "/vibely-social/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
   ]
 }
