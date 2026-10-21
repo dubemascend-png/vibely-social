@@ -16,6 +16,58 @@ useEffect(()=>{if(session)void load();else{PR(null);SU(null);}},[session]);
 useEffect(()=>{if(session&&profile&&section==='Moderation'){void loadReports();void loadAppeals();}},[session,profile,section]);
 useEffect(()=>{if(session&&profile&&section==='Audit log'&&(profile.permissions?.includes('*')||profile.permissions?.includes('audit.view')))void loadAudit();},[session,profile,section]);
 useEffect(()=>{if(session&&profile&&(section==='Users'||section==='Purple Verification')&&(profile.permissions?.includes('*')||profile.permissions?.includes('users.view')||profile.permissions?.includes('users.manage'))){void loadUsers(true);}},[session,profile,section]);
+useEffect(()=>{if(session&&profile&&['Content','Vibes','Communities','Enforcement','Appeals','Purple Verification','Messages Safety','Analytics','Communications','Support','Admin Team & Roles','System'].includes(section))void loadOpsSection();},[session,profile,section,dateRange]);
+
+async function loadOpsSection(){
+ OPS([]);ER('');
+ const permissions=profile?.permissions||[];
+ const required:Record<string,string>={'Content':'content.review','Vibes':'content.review','Communities':'communities.view','Enforcement':'enforcement.view','Appeals':'appeals.review','Purple Verification':'verification.view','Messages Safety':'messages_safety.view','Analytics':'analytics.view','Communications':'communications.view','Support':'support.view','Admin Team & Roles':'admins.manage','System':'system.view'};
+ if(required[section]&&!can(permissions,required[section])&&!(section==='Purple Verification'&&can(permissions,'users.manage')))return;
+ try{
+  let result:any;
+  if(section==='Content'||section==='Vibes')result=await supabase.from('posts').select('id,author_id,caption,media_type,media_url,visibility,created_at').order('created_at',{ascending:false}).limit(100);
+  else if(section==='Communities')result=await supabase.from('communities').select('id,name,slug,description,privacy,created_by,created_at,topics').order('created_at',{ascending:false}).limit(100);
+  else if(section==='Enforcement')result=await supabase.from('admin_policies').select('*').order('category').limit(200);
+  else if(section==='Appeals')result=await supabase.from('account_appeals').select('id,user_id,restriction_status,reason,appeal_text,status,reviewer_note,reviewer_id,created_at').order('created_at',{ascending:false}).limit(100);
+  else if(section==='Purple Verification')result=await supabase.from('verification_requests').select('*').order('created_at',{ascending:false}).limit(100);
+  else if(section==='Messages Safety'){
+   const [m,requests]=await Promise.all([supabase.from('messages').select('id',{count:'exact',head:true}),supabase.from('message_requests').select('id',{count:'exact',head:true}).eq('status','pending')]);
+   if(m.error)throw m.error;if(requests.error)throw requests.error;
+   OPS([{kind:'message_metrics',messages:m.count||0,pendingRequests:requests.count||0}]);return;
+  }else if(section==='Analytics'){
+   const [posts,users,communities,reports]=await Promise.all([supabase.from('posts').select('id',{count:'exact',head:true}),supabase.from('profiles').select('id',{count:'exact',head:true}),supabase.from('communities').select('id',{count:'exact',head:true}),supabase.from('reports').select('id',{count:'exact',head:true})]);
+   for(const q of [posts,users,communities,reports])if(q.error)throw q.error;
+   OPS([{kind:'analytics',posts:posts.count||0,users:users.count||0,communities:communities.count||0,reports:reports.count||0}]);return;
+  }else if(section==='Communications')result=await supabase.from('admin_announcements').select('*').order('created_at',{ascending:false}).limit(100);
+  else if(section==='Support')result=await supabase.from('support_tickets').select('id,user_id,subject,body,status,priority,assigned_to,created_at,updated_at').order('updated_at',{ascending:false}).limit(100);
+  else if(section==='System')result=await supabase.from('admin_feature_flags').select('*').order('key');
+  else if(section==='Admin Team & Roles'){
+   const [adminsResult,rolesResult]=await Promise.all([supabase.rpc('admin_list_members'),supabase.from('admin_roles').select('id,name,description,permissions,is_system').order('name')]);
+   if(adminsResult.error)throw adminsResult.error;if(rolesResult.error)throw rolesResult.error;
+   AD(adminsResult.data||[]);ROLES(rolesResult.data||[]);OPS(rolesResult.data||[]);return;
+  }
+  if(result?.error)throw result.error;OPS(result?.data||[]);
+ }catch(e){ER(friendlyError(e,'This section could not load its live records. Check your permissions and retry.'));}
+}
+async function createRole(e:React.FormEvent){
+ e.preventDefault();if(!can(profile?.permissions||[],'admins.manage')){ER('You do not have permission to create roles.');return;}
+ const permissions=rolePermissions.split(',').map(x=>x.trim()).filter(Boolean);B(true);ER('');ME('');
+ try{const {error}=await supabase.rpc('admin_create_role',{p_name:roleName,p_description:roleDescription,p_permissions:permissions});if(error)throw error;ME('Custom role created and recorded in the audit log.');RNAME('');RDESC('');await loadOpsSection();}
+ catch(e){ER(friendlyError(e,'Could not create this role. Only the platform owner can create roles.'));}
+ finally{B(false);}
+}
+async function assignRole(e:React.FormEvent){
+ e.preventDefault();if(!targetAdmin||!targetRole)return;B(true);ER('');ME('');
+ try{const {error}=await supabase.rpc('admin_assign_role',{p_target_user_id:targetAdmin,p_role_id:targetRole});if(error)throw error;ME('Role updated and recorded in the audit log.');TADMIN('');TROLE('');await loadOpsSection();}
+ catch(e){ER(friendlyError(e,'Role change was rejected by server-side authorization.'));}
+ finally{B(false);}
+}
+async function updateQueueRow(table:string,id:string,changes:any,success:string){
+ B(true);ER('');ME('');
+ try{const {error}=await supabase.from(table).update(changes).eq('id',id);if(error)throw error;ME(success);await loadOpsSection();}
+ catch(e){ER(friendlyError(e,'That update could not be saved. Please retry.'));}
+ finally{B(false);}
+}
 async function login(e:React.FormEvent){e.preventDefault();if(busy)return;B(true);ER('');ME('');try{const {error}=await supabase.auth.signInWithPassword({email:email.trim().toLowerCase(),password});if(error)ER(friendlyError(error,'We couldn’t sign you in. Check your details and try again.'));}catch(error){ER(friendlyError(error,'We couldn’t reach Vibe.ly. Check your connection and retry.'));}finally{B(false);}}
 async function logout(){await supabase.auth.signOut();S(null);PR(null);}
 async function loadReports(){B(true);const {data,error}=await supabase.from('reports').select('id,reporter_id,post_id,reported_user_id,reason,status,created_at').order('created_at',{ascending:false}).limit(100);if(error){ER(error.message);B(false);return;}const rows=data||[];const ids=[...new Set(rows.map((r:any)=>r.post_id).filter(Boolean))];let ps:any[]=[];if(ids.length){const q=await supabase.from('posts').select('id,author_id,caption,media_url,media_type,created_at').in('id',ids);if(q.error)ER(q.error.message);ps=q.data||[];}const postById=new Map(ps.map((p:any)=>[p.id,p]));const profileIds=[...new Set([...rows.map((r:any)=>r.reported_user_id),...ps.map((p:any)=>p.author_id)].filter(Boolean))];let profileRows:any[]=[];if(profileIds.length){const q=await supabase.from('profiles').select('id,username,display_name,avatar_url,cover_url,bio,is_verified,created_at').in('id',profileIds);if(q.error)ER('Could not load reported account profiles: '+q.error.message);profileRows=q.data||[];}const profileById=new Map(profileRows.map((p:any)=>[p.id,p]));RP(rows.map((r:any)=>{const post=postById.get(r.post_id);const targetId=post?.author_id||r.reported_user_id;return {...r,reportedPost:post?{...post,authorProfile:profileById.get(post.author_id)||null}:null,reportedProfile:profileById.get(targetId)||null,targetUserId:targetId||null};}));B(false);} 
