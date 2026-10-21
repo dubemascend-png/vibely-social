@@ -2,6 +2,12 @@
 
 Mobile-first social platform using Next.js App Router, React, TypeScript, Tailwind CSS, and Supabase. The Vite entry remains as a temporary fallback while the Next.js path becomes the primary web app. This repository and backend are separate from eCuisine.
 
+## Latest deployment
+- Profile picture and profile cover/background image uploads are implemented.
+- Android Social and Admin APKs are built by the GitHub Actions workflow and published under `public/downloads/`.
+- Download the apps from [Vibe.ly Downloads](https://dubemascend-png.github.io/vibely-social/downloads/).
+- This deployment is a test build, not a claim that every planned feature is production-ready.
+
 ## Current working features
 - Email/password sign-up and sign-in with Supabase Auth
 - Email-based password recovery and reset flow
