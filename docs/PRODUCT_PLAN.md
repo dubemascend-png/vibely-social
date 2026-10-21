@@ -8,7 +8,7 @@
 
 - Web repository: `dubemascend-png/vibely-social`
 - Backend: separate Supabase project `jzcxybjtexyeoweyelfg` in Europe West.
-- Existing web app: React + TypeScript + Vite starter. It is not yet the requested Next.js production architecture.
+- Web app: Next.js App Router, React, TypeScript, and Tailwind foundation now added; existing Vite entry remains temporarily for fallback while the Next.js build is verified.
 - Existing database: profiles, posts, follows, likes, comments, conversations, conversation_members, messages, notifications, blocks, and reports. RLS is enabled on all inspected public tables.
 - Existing storage: public avatar and post-media buckets. Public media is suitable only for intentionally public content; private account/story/message media needs private buckets and signed access.
 - Existing build check: GitHub Actions workflow added; its first run exposed a missing-lockfile/cache configuration issue, which has been corrected. Verify the latest run before treating CI as passing.
@@ -60,7 +60,7 @@ These are interaction principles, not UI templates or assets to copy.
 4. Account deactivation/deletion and documented data-retention rules.
 
 ### Milestone 5 — Architecture, native mobile, release
-1. Move the web app to Next.js + TypeScript + Tailwind once the core behavior and schema are stable; preserve existing functionality during migration.
+1. Complete the Next.js + TypeScript + Tailwind migration, remove the Vite fallback only after parity is verified, and preserve existing functionality during the transition.
 2. Add a separate Expo React Native app sharing the same Supabase auth and data contracts.
 3. Add automated unit/integration/end-to-end tests and security policy tests.
 4. Deploy the web app, configure auth redirect URLs and email delivery, then build and test the Android app on a physical device.
