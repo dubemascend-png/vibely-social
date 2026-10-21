@@ -1,4 +1,4 @@
-name: Build Vibely
+name: Build vibe.ly
 on:
   push:
     branches: [main]
