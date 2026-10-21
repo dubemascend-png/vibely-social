@@ -149,3 +149,25 @@
 
 /* Reported account identity and moderation action controls */
 .ac-reported-profile{margin:10px 0;padding:10px;border:1px solid var(--ac-border,#e5e7eb);border-radius:12px;max-width:360px;background:rgba(124,92,255,.045)}.ac-reported-profile .ac-person{align-items:flex-start}.ac-reported-profile .ac-avatar{object-fit:cover;flex-shrink:0}.ac-reported-profile p{margin:7px 0 0;max-width:320px;white-space:normal;overflow-wrap:anywhere}.ac-reported-post{margin-top:9px}.ac-review-actions .danger{border-color:#b91c1c;color:#dc2626}.ac-review-actions button{white-space:normal;line-height:1.35}.notification-body{display:block;margin-top:5px;white-space:normal;overflow-wrap:anywhere;line-height:1.55;color:var(--muted,#81798e);font-size:12px}.notification-kind.kind-moderation_action{background:#fff0f2;color:#bb3551}.restriction-screen .restriction-card{max-width:560px}
+
+
+/* Animated post-sign-in Vibe.ly welcome splash */
+.welcome-splash{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:linear-gradient(145deg,#f7f3ff 0%,#eee7ff 48%,#f4efff 100%);color:#4d348e;animation:welcome-splash-in .35s ease-out both}
+.welcome-splash:before,.welcome-splash:after{content:"";position:absolute;width:min(75vw,430px);aspect-ratio:1;border-radius:50%;pointer-events:none;filter:blur(2px)}
+.welcome-splash:before{top:-25%;left:-20%;background:radial-gradient(circle,#d8c8ff88 0%,#d8c8ff00 70%);animation:welcome-orbit 4s ease-in-out infinite alternate}
+.welcome-splash:after{bottom:-30%;right:-20%;background:radial-gradient(circle,#c4adff88 0%,#c4adff00 70%);animation:welcome-orbit 5s ease-in-out infinite alternate-reverse}
+.welcome-logo-wrap{position:relative;display:grid;place-items:center;width:102px;height:102px;border-radius:32px;background:linear-gradient(145deg,#a78bfa,#7952dc 65%,#6941c6);box-shadow:0 18px 42px #7651cf40,inset 0 2px 3px #ffffffb8,inset 0 -5px 10px #43218c44;animation:welcome-logo-bounce 1.45s cubic-bezier(.2,.8,.25,1) infinite;z-index:1}
+.welcome-logo{font:900 78px/1 Manrope,system-ui,sans-serif;letter-spacing:-7px;color:white;text-shadow:0 3px 0 #6742b4,0 7px 15px #3c207c55;transform:translate(-3px,-3px)}
+.welcome-logo-dot{position:absolute;right:19px;top:17px;width:10px;height:10px;border-radius:50%;background:#f4efff;box-shadow:0 0 14px #fff}
+.welcome-wordmark{position:relative;z-index:1;margin-top:24px;font:800 35px/1.15 Manrope,system-ui,sans-serif;letter-spacing:-1.8px;color:#3f2b75;animation:welcome-text-in .65s .12s both}
+.welcome-wordmark span{color:#8a68ed}
+.welcome-tagline{position:relative;z-index:1;margin-top:9px;color:#7c6aa6;font-size:12px;font-weight:600;letter-spacing:.5px;animation:welcome-text-in .65s .22s both}
+.welcome-loader{position:relative;z-index:1;display:flex;gap:6px;margin-top:34px}
+.welcome-loader span{width:6px;height:6px;border-radius:50%;background:#8a68ed;animation:welcome-dot-pulse .8s ease-in-out infinite}
+.welcome-loader span:nth-child(2){animation-delay:.13s}.welcome-loader span:nth-child(3){animation-delay:.26s}
+@keyframes welcome-logo-bounce{0%,100%{transform:translateY(0) rotate(0) scale(1)}45%{transform:translateY(-7px) rotate(-3deg) scale(1.035)}70%{transform:translateY(1px) rotate(2deg) scale(.99)}}
+@keyframes welcome-dot-pulse{0%,80%,100%{opacity:.35;transform:translateY(0) scale(.8)}40%{opacity:1;transform:translateY(-4px) scale(1.15)}}
+@keyframes welcome-text-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes welcome-splash-in{from{opacity:0}to{opacity:1}}
+@keyframes welcome-orbit{from{transform:translate3d(-3%,0,0) scale(.95)}to{transform:translate3d(5%,4%,0) scale(1.08)}}
+@media(prefers-reduced-motion:reduce){.welcome-splash:before,.welcome-splash:after,.welcome-logo-wrap,.welcome-wordmark,.welcome-tagline,.welcome-loader span{animation:none!important}.welcome-splash{animation:none}}
