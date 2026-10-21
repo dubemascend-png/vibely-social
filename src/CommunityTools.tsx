@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
-import { CalendarDays, Clock, MapPin, Plus, Check, Trash2, UserRoundCog, Users } from 'lucide-react';
+import { CalendarDays, Clock, MapPin, Plus, Check, ShieldCheck, Trash2, UserRoundCog, Users } from 'lucide-react';
 import { supabase } from './supabase';
 
 type EventRow={id:string;community_id:string;title:string;description:string;starts_at:string;location:string;status:'pending'|'published'|'cancelled';created_by:string;moderated_by:string|null};
