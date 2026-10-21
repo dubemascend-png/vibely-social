@@ -7,6 +7,7 @@ Mobile-first social platform using Next.js App Router, React, TypeScript, Tailwi
 - Email-based password recovery and reset flow
 - Profile editing for display name, username, and bio
 - Responsive feed with text, image, and video posts
+- Opt-in nearby discovery by manually selected city/area; no precise coordinates or background tracking
 - Supabase media uploads, likes, comments, follow/unfollow
 - Direct conversations and realtime text messages
 - Realtime in-app notifications for follows, likes, comments, and new messages
