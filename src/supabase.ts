@@ -17,7 +17,7 @@ export function getAppRedirectUrl(route = ''): string {
   const isProjectSite = window.location.pathname === '/vibely-social' ||
     window.location.pathname.startsWith('/vibely-social/');
   const base = isProjectSite ? '/vibely-social/' : '/';
-  return new URL(route.replace(/^\\//, ''), window.location.origin + base).toString();
+  return new URL(route.replace(/^\/+/, ''), window.location.origin + base).toString();
 }
 
 export const supabase = createClient(url || 'https://example.supabase.co', key || 'missing-publishable-key');
