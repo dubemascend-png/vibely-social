@@ -43,3 +43,23 @@ See [docs/PRODUCT_PLAN.md](docs/PRODUCT_PLAN.md) for product rationale, privacy 
 
 ## Not yet production complete
 Nearby discovery and its opt-in privacy settings, private-account follow requests, Stories, short-video recommendation/processing, communities, admin/moderation tools, account deletion/deactivation, full message privacy controls, automated end-to-end and RLS boundary tests, Next.js migration, Expo native app, deployment, push notifications, and physical-device verification remain to be built and tested. The current repo is not yet a production release.
+
+## Backend services (Phase A)
+
+Supabase remains the source of truth. New feature work should use the shared modules under `src/services/` rather than repeating queries inside screens.
+
+- `auth.ts`: session restoration, sign-in/up, password recovery, sign-out.
+- `profiles.ts`, `posts.ts`, `comments.ts`, `follows.ts`: account and feed operations.
+- `videos.ts`, `recommendations.ts`, `uploads.ts`, `analytics.ts`: playback, feedback, media and best-effort analytics.
+- `communities.ts`, `events.ts`, `messages.ts`, `notifications.ts`, `search.ts`: feature-specific data operations.
+- `request.ts`: retryable request errors, offline awareness and friendly error messages.
+
+Service functions validate user input for usability, but database RLS remains the security boundary. Do not put Supabase service-role keys in frontend environment variables. See [the backend security audit](docs/backend/SECURITY_AUDIT.md) for the current findings and items that require deliberate review.
+
+### Local environment
+
+Copy `.env.example` to `.env.local` and set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`. The publishable key is intended for client use; never use a service-role/secret key in the browser or APK.
+
+### Verification
+
+Run `npm run lint` and `npm run build` before shipping changes. Feature phases should also include a manual authenticated-user check and a cross-user RLS check for any new or changed data path.
