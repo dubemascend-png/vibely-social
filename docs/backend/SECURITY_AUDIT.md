@@ -26,12 +26,16 @@ These need a function-by-function review of function body, intended caller, gran
 - Added a shared `src/services/` layer for auth, profiles, posts, comments, follows, videos, communities, events, messages, notifications, search, recommendations, uploads, analytics and request handling.
 - Auth flows in `src/App.tsx` now call the shared auth service; session restore and sign-out errors are surfaced through friendly error handling.
 - Service queries use the existing schema where verified. Analytics is best-effort until a dedicated analytics table is added through a reviewed migration.
-- No database tables or policies were changed in this phase; the existing RLS configuration is preserved.
+- Added owner-scoped `post_drafts` and `analytics_events` tables with RLS and explicit authenticated grants.
+- Added `stories` and `user_notes` tables with expiry-aware reads and owner-only writes; story visibility respects follower relationships, private-account visibility, and blocks.
+- Added `message_requests` with sender/recipient-scoped policies and recipient-only accept/decline updates.
+- Added community `rules`, `topics`, `cover_url`, and `updated_at` metadata.
+- Revoked anonymous execution of `admin_set_profile_verified` while retaining authenticated execution for its internal admin permission check. Revoked direct RPC execution of the trigger-only `enforce_vibely_publication_permissions()` function; trigger behavior remains intact.
 
 ## Follow-up security checks
 
-1. Review each reported SECURITY DEFINER function's definition and grants; restrict unauthenticated RPC access where not intentional.
+1. Continue reviewing the remaining SECURITY DEFINER functions and grants. The reviewed admin/moderation functions contain internal permission checks; the analytics RPC verifies post ownership; message read/delivery RPCs verify conversation membership. Revisit any function whose body changes.
 2. Verify that private conversations can be read only by their members and community content follows the actual membership/visibility rules.
 3. Verify private-account visibility and follow-request behavior; the currently inspected `profiles` SELECT policy permits signed-in users to read profile rows, so privacy behavior must not rely on UI hiding alone.
 4. Keep server-side validation and RLS tests for every new table and mutation.
-5. Add analytics storage only through a migration with owner-scoped RLS; never silently create a client-accessible table without policies.
+5. Keep analytics storage owner-scoped; the new table is created with RLS and owner policies.
