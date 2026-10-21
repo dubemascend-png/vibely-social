@@ -105,3 +105,13 @@
 .media-file-details>span,.media-file-details small{color:#8e87a3;font-size:11px}
 .media-file-details label{display:grid;gap:6px;font-size:11px;font-weight:700}
 .media-file-details input{width:100%;border:1px solid #e9e4f7;border-radius:9px;padding:10px;background:#fff;color:#302a47;outline-color:#b9aaff}
+
+
+.content-filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.content-filters button,.own-post-actions button,.caption-editor button{border:1px solid #e9e5f4;border-radius:9px;background:#fff;color:#77708d;padding:8px 11px;font-size:11px}
+.content-filters button.active{background:#eee9ff;border-color:#cfc3ff;color:#674cf0;font-weight:700}
+.own-post-actions{display:flex;justify-content:flex-end;gap:8px;margin-bottom:8px}
+.caption-editor{display:grid;gap:8px;margin:12px 0}
+.caption-editor textarea{width:100%;resize:vertical;border:1px solid #e7e2f4;border-radius:10px;padding:12px;color:#302a47;outline-color:#b9aaff}
+.caption-editor small{text-align:right;color:#9891a9;font-size:10px}
+.caption-editor>div{display:flex;justify-content:flex-end;gap:8px}
