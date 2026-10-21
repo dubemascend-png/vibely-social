@@ -42,7 +42,7 @@ These are interaction principles, not UI templates or assets to copy.
 5. Verify RLS and cross-account access before exposing the app publicly.
 
 ### Milestone 2 — Privacy and nearby discovery
-1. Add user settings, normalized interests, opt-in nearby-discovery preferences, and manual city/area selection.
+1. Add user settings, normalized interests, opt-in nearby-discovery preferences, and manual city/area selection. (Initial city-based opt-in presence table and UI are now in place.)
 2. Add follow requests for private accounts and enforce protected-post visibility in RLS.
 3. Add blocks, mutes, privacy-aware search, approximate distance only, and explicit location permission UX.
 4. Do not persist or display precise device coordinates by default.
@@ -79,4 +79,4 @@ These are interaction principles, not UI templates or assets to copy.
 
 ## Current status (not a production-ready release)
 
-The initial UI supports basic email/password auth, a feed, post uploads, likes, comments, and follow/unfollow, but several screens are placeholders. Messaging, notifications, Stories, nearby discovery, communities, admin/moderation workflows, password recovery, account deletion, the Next.js migration, Expo app, deployment, and end-to-end testing are still pending. Do not represent the current repository as complete or deployed.
+The current UI supports email/password auth and password recovery, profile editing, a feed, post uploads, likes, comments, follow/unfollow, direct realtime text conversations, event-driven in-app notifications, and opt-in manual-city nearby discovery. Several other screens are still placeholders. Stories, private-account follow requests, communities, admin/moderation workflows, account deletion, full settings, Expo native app, deployment, and end-to-end testing are still pending. Do not represent the current repository as complete or deployed.
