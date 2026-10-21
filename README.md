@@ -1,25 +1,28 @@
-# Vibely Social
+# vibe.ly — Find Your People. Feel the Vibe.
 
-Mobile-first social networking web app built with React, TypeScript, Vite, and Supabase. This repository and its backend are separate from eCuisine.
+Mobile-first social platform using React, TypeScript, Vite, and Supabase as the current implementation foundation. The roadmap documents a planned migration to Next.js for web and Expo/React Native for Android/iOS. This repository and backend are separate from eCuisine.
 
-## Implemented in the initial frontend
-- Email/password registration and sign-in using Supabase Auth
-- Responsive mobile/desktop social feed
-- Text, photo, and video posts uploaded to the `vibely-posts` storage bucket
-- Like/unlike posts and add comments
-- Discover profiles and follow/unfollow members
-- Basic profile view and mobile navigation
-- Progressive Web App manifest
+## Current working features
+- Email/password sign-up and sign-in with Supabase Auth
+- Email-based password recovery and reset flow
+- Profile editing for display name, username, and bio
+- Responsive feed with text, image, and video posts
+- Supabase media uploads, likes, comments, follow/unfollow
+- Direct conversations and realtime text messages
+- Realtime in-app notifications for follows, likes, comments, and new messages
+- Notification read state and mark-all-read
+- RLS-enabled database foundation and private-schema notification triggers
+- Responsive mobile navigation
 
-## Environment variables
-Set these in `.env.local` or your hosting provider's environment settings:
+## Supabase environment
+Set these in `.env.local` or your hosting provider:
 
 ```env
 VITE_SUPABASE_URL=https://jzcxybjtexyeoweyelfg.supabase.co
 VITE_SUPABASE_PUBLISHABLE_KEY=YOUR_SUPABASE_PUBLISHABLE_KEY
 ```
 
-Use only the publishable/anon key in browser apps. **Never put a service-role key or any secret key in Vite client environment variables.**
+Only use the publishable key in client-side code. Never put a service-role or secret key in Vite/Next.js public environment variables or mobile binaries.
 
 ## Run locally
 ```bash
@@ -28,8 +31,8 @@ npm run dev
 npm run build
 ```
 
-## Deployment
-Import this repository into Vercel, Netlify, or another Vite-compatible static host and set the two environment variables above. Add the deployed URL to Supabase Auth's Site URL and Redirect URLs. The Android app/package should be built after web deployment is verified.
+## Roadmap and research
+See [docs/PRODUCT_PLAN.md](docs/PRODUCT_PLAN.md) for product rationale, privacy principles, architecture, milestones, and acceptance gates.
 
-## Remaining work
-This is the first working frontend foundation, not a finished production social network. Messaging and notifications screens are placeholders. Profile editing, password recovery, account settings, moderation/report flows, automated tests, Android packaging, deployment, and end-to-end verification remain. Email confirmation behavior depends on Supabase Auth settings.
+## Not yet production complete
+Nearby discovery and its opt-in privacy settings, private-account follow requests, Stories, short-video recommendation/processing, communities, admin/moderation tools, account deletion/deactivation, full message privacy controls, automated end-to-end and RLS boundary tests, Next.js migration, Expo native app, deployment, push notifications, and physical-device verification remain to be built and tested. The current repo is not yet a production release.
