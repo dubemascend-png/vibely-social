@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { CheckCircle2, ChevronDown, Clock3, Compass, Film, Flame, Gamepad2, GraduationCap, Heart, ListVideo, MoreVertical, Music2, Play, Plus, Search, Share2, ThumbsDown, Video, X, Users, Settings2, Clapperboard } from 'lucide-react';
+import { CheckCircle2, ChevronDown, Clock3, Compass, Film, Flame, Gamepad2, GraduationCap, Heart, ListVideo, MoreVertical, Music2, Play, Plus, Search, Share2, ThumbsDown, Video, X, Users, Settings2, Clapperboard, MessageCircle } from 'lucide-react';
 import VideoWatch from './video/VideoWatch';
 import ShortsFeed from './video/ShortsFeed';
 import VideoLibrary from './video/VideoLibrary';
@@ -20,7 +20,7 @@ const ago = (date: string) => { const n = Math.max(1, Math.floor((Date.now() - n
 const durationLabel = (seconds: number) => Math.floor(seconds / 60) + ':' + String(Math.floor(seconds % 60)).padStart(2, '0');
 
 /** Vibe video home. Real video posts are supplied by the existing Supabase-backed feed. */
-export default function Vibe({ posts, onCreate }: { posts: VideoPost[]; onCreate: () => void }) {
+export default function Vibe({ posts, onCreate, onLike, onComment, onPlay, onComplete, onProfileVisit }: { posts: VideoPost[]; onCreate: () => void; onLike: (postId: string) => void; onComment: (postId: string, body: string) => void; onPlay: (postId: string) => void; onComplete: (postId: string) => void; onProfileVisit: (profileId: string) => void }) {
   const [category, setCategory] = useState('All');
   const [search, setSearch] = useState('');
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
@@ -82,7 +82,7 @@ export default function Vibe({ posts, onCreate }: { posts: VideoPost[]; onCreate
             </button>
             <div className="vibe-card-details">
               <span className="vibe-creator-avatar">{post.profiles?.avatar_url ? <img src={post.profiles.avatar_url} alt="" loading="lazy"/> : creator.slice(0,1).toUpperCase()}</span>
-              <div className="vibe-card-copy"><button className="vibe-card-title" onClick={() => { setSelectedVideo(post); }}>{post.caption?.trim() || 'A video from ' + creator}</button><div className="vibe-card-channel">{creator}{post.profiles?.is_verified && <CheckCircle2 size={13} fill="#ff3b5c" color="#ff3b5c" aria-label="Verified creator"/>}</div><div className="vibe-card-meta">{(post.likes?.length || 0).toLocaleString()} likes <span>·</span> {ago(post.created_at)}</div></div>
+              <div className="vibe-card-copy"><button className="vibe-card-title" onClick={() => { setSelectedVideo(post); }}>{post.caption?.trim() || 'A video from ' + creator}</button><div className="vibe-card-channel">{creator}{post.profiles?.is_verified && <CheckCircle2 size={13} fill="#ff3b5c" color="#ff3b5c" aria-label="Verified creator"/>}</div><div className="vibe-card-meta">{(post.likes?.length || 0).toLocaleString()} likes <span>·</span> {ago(post.created_at)}</div><div className="vibe-card-actions"><button onClick={()=>onLike(post.id)} aria-label="Like video"><Heart size={14}/> Like</button><button onClick={()=>setSelectedVideo(post)} aria-label="View comments"><MessageCircle size={14}/> {post.comments?.length||0}</button><button onClick={()=>onProfileVisit(post.author_id)} aria-label="Visit creator profile">Profile</button></div></div>
               <div className="vibe-card-menu-wrap"><button className="vibe-card-menu-button" aria-label={'More options for ' + (post.caption || 'video')} aria-expanded={activeMenu === post.id} onClick={() => setActiveMenu(activeMenu === post.id ? null : post.id)}><MoreVertical size={19}/></button>
                 {activeMenu === post.id && <div className="vibe-card-menu" role="menu">
                   <button role="menuitem" onClick={() => { toggleWatchLater(post.id); setSavedNotice(isSaved ? 'Removed from Watch Later.' : 'Added to Watch Later.'); setActiveMenu(null); }}><Clock3 size={15}/>{isSaved ? 'Remove from Watch Later' : 'Save to Watch Later'}</button>
@@ -98,6 +98,6 @@ export default function Vibe({ posts, onCreate }: { posts: VideoPost[]; onCreate
       </div>}
     <div className="vibe-video-footer-note"><span><Heart size={14}/> Made for your interests</span><span>Recommendations are a starter ranking based on available likes and comments. // TODO: connect backend for watch-time and satisfaction signals.</span></div>
     </>}
-    {selectedVideo && <VideoWatch video={selectedVideo} posts={posts.filter(p=>p.media_type==='video'&&!!p.media_url)} onClose={()=>setSelectedVideo(null)} onSelect={setSelectedVideo}/ >}
+    {selectedVideo && <VideoWatch video={selectedVideo} posts={posts.filter(p=>p.media_type==='video'&&!!p.media_url)} onClose={()=>setSelectedVideo(null)} onSelect={setSelectedVideo} onLike={onLike} onComment={onComment} onPlay={onPlay} onComplete={onComplete} onProfileVisit={onProfileVisit}/ >}
   </section>;
 }
