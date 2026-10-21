@@ -14,3 +14,6 @@ jobs:
           node-version: 22
       - run: npm install
       - run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://jzcxybjtexyeoweyelfg.supabase.co
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_Tdf_dP30ClMxZBaJ7E9a9Q_oazifpN-
