@@ -16,6 +16,22 @@ export default function Messages({currentUserId}:{currentUserId:string}){
  const activeConversation=conversations.find(c=>c.id===active)||null;
  const loadInbox=useCallback(async()=>{setLoading(true);setError('');const {data,error}=await supabase.from('conversations').select('id,is_group,title,created_by,created_at,conversation_members(user_id)').order('created_at',{ascending:false}).limit(100);if(error){setError(error.message);setLoading(false);return}const rows=(data||[]) as ConversationRow[];const otherIds=[...new Set(rows.flatMap(c=>c.conversation_members.map(m=>m.user_id).filter(id=>id!==currentUserId)))];let people:Profile[]=[];if(otherIds.length){const p=await supabase.from('profiles').select('id,username,display_name,avatar_url,bio').in('id',otherIds);if(p.error)setError(p.error.message);else people=(p.data||[]) as Profile[]}setProfiles(people);setConversations(rows.map(c=>({...c,otherProfile:people.find(p=>c.conversation_members.some(m=>m.user_id===p.id&&p.id!==currentUserId))})));setLoading(false)},[currentUserId]);
  useEffect(()=>{void loadInbox()},[loadInbox]);
+ // Track delivery for incoming messages even when another conversation is open.
+ useEffect(()=>{
+   if(!conversations.length)return;
+   const conversationIds=new Set(conversations.map(c=>c.id));
+   const channel=supabase.channel('vibely-delivery-'+currentUserId)
+     .on('postgres_changes',{event:'INSERT',schema:'public',table:'messages'},payload=>{
+       const m=payload.new as Message;
+       if(m.sender_id===currentUserId||!conversationIds.has(m.conversation_id))return;
+       if(active===m.conversation_id&&document.visibilityState==='visible'){
+         void supabase.rpc('mark_messages_read',{p_conversation_id:m.conversation_id});
+       }else{
+         void supabase.rpc('mark_messages_delivered',{p_conversation_id:m.conversation_id});
+       }
+     }).subscribe();
+   return()=>{void supabase.removeChannel(channel)};
+ },[conversations,currentUserId,active]);
  useEffect(()=>{const term=search.trim().replace(/[,%()]/g,'');if(!term)return;const timer=window.setTimeout(async()=>{const {data,error}=await supabase.from('profiles').select('id,username,display_name,avatar_url,bio').neq('id',currentUserId).or('username.ilike.%'+term+'%,display_name.ilike.%'+term+'%').limit(20);if(error)setError(error.message);else setProfiles((data||[]) as Profile[])},250);return()=>window.clearTimeout(timer)},[search,currentUserId]);
  const loadMessages=useCallback(async(id:string)=>{const {data,error}=await supabase.from('messages').select('id,conversation_id,sender_id,body,created_at,delivered_at,read_at').eq('conversation_id',id).order('created_at',{ascending:false}).limit(100);if(error){setError(error.message);return}setMessages(((data||[]) as Message[]).reverse());const receipt=await supabase.rpc('mark_messages_read',{p_conversation_id:id});if(receipt.error)setError(receipt.error.message)},[]);
  useEffect(()=>{if(!active){setMessages([]);return}void loadMessages(active);const channel=supabase.channel('vibely-messages-'+active)
