@@ -1,6 +1,7 @@
 'use client';
 import {useEffect,useState} from 'react';
 import {supabase, getAppRedirectUrl} from '../../src/supabase';
+import {friendlyError} from '../../src/services/request';
 import {ShieldCheck,LayoutDashboard,Users,Flag,UserCog,ScrollText,Settings,BadgeCheck,LogOut,Search,RefreshCw,Sun,Moon,LockKeyhole,Activity,AlertTriangle,CheckCircle2,Clock3,ChevronRight,Menu,X} from 'lucide-react';
 type Summary={total_users:number;new_users_7d:number;new_users_30d:number;total_posts:number;total_videos:number;total_communities:number;total_messages:number;total_reports:number;open_reports:number;pending_appeals:number;pending_message_requests:number;active_stories:number;active_admins:number;pending_invitations:number;generated_at:string};
 type Admin={user_id:string;full_name:string;email:string;department:string;role_name:string;permissions:unknown;status:string;last_login_at:string|null;created_at:string;invited_by:string|null};
