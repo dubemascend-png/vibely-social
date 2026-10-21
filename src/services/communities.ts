@@ -8,10 +8,10 @@ export async function listCommunities(limit = 30) {
     return data ?? [];
   });
 }
-export async function createCommunity(input: { name: string; slug: string; description?: string; created_by: string; privacy?: 'public' | 'private' }) {
+export async function createCommunity(input: { name: string; slug: string; description?: string; created_by: string; privacy?: 'public' | 'private' | 'invite_only'; rules?: string[]; topics?: string[]; cover_url?: string | null }) {
   const name = input.name.trim();
   if (name.length < 3 || name.length > 80) throw new Error('Community names must be 3–80 characters.');
-  const { data, error } = await supabase.from('communities').insert({ ...input, name, description: input.description?.trim() ?? '', privacy: input.privacy ?? 'public' }).select('*').single();
+  const { data, error } = await supabase.from('communities').insert({ ...input, name, description: input.description?.trim() ?? '', privacy: input.privacy ?? 'public', rules: (input.rules ?? []).map(rule => rule.trim()).filter(Boolean).slice(0,10), topics: (input.topics ?? []).map(topic => topic.trim()).filter(Boolean).slice(0,10), cover_url: input.cover_url ?? null }).select('*').single();
   throwIfError(error);
   return data;
 }
