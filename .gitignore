@@ -5,3 +5,8 @@ dist
 !.env.example
 *.local
 .DS_Store
+
+.next
+out
+.vercel
+coverage
