@@ -115,18 +115,18 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-      - name: Publish APKs to the website downloads folder
-        shell: bash
-        run: |
-          mkdir -p public/downloads
-          cp artifacts/Vibe-ly-Social.apk public/downloads/Vibe-ly-Social.apk
-          cp artifacts/Vibe-ly-Admin.apk public/downloads/Vibe-ly-Admin.apk
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public/downloads/Vibe-ly-Social.apk public/downloads/Vibe-ly-Admin.apk
-          if git diff --cached --quiet; then
-            echo "APK files are already up to date."
-          else
-            git commit -m "Publish Vibe.ly Android APK downloads"
-            git push origin HEAD:main
-          fi
+      - name: Publish APKs as downloadable GitHub Release assets
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: android-latest
+          name: Vibe.ly Android APKs
+          body: |
+            Latest automatically built Vibe.ly Android applications.
+            Download the Social app or Admin app APK below.
+          files: |
+            artifacts/Vibe-ly-Social.apk
+            artifacts/Vibe-ly-Admin.apk
+          overwrite_files: true
+          make_latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
