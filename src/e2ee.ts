@@ -75,14 +75,14 @@ export async function decryptMessage(body: string, userId: string, identity: Ide
   try { envelope = JSON.parse(body) as EncryptedEnvelope; } catch { return body; }
   if (envelope?.__vibely_e2ee !== 1) return body;
   const wrapped = envelope.keys?.[userId];
-  if (!wrapped) return '🔒 This encrypted message was not addressed to this device.';
+  if (!wrapped) return '🔒 This message was encrypted for a different device key. Open Vibe.ly on the original device, or restore that device’s private key. Resetting the key cannot recover old messages.';
   try {
     const rawKey = await crypto.subtle.decrypt({ name: 'RSA-OAEP' }, identity.privateKey, fromBase64(wrapped));
     const key = await crypto.subtle.importKey('raw', rawKey, { name: 'AES-GCM' }, false, ['decrypt']);
     const plaintext = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: fromBase64(envelope.iv) }, key, fromBase64(envelope.ciphertext));
     return new TextDecoder().decode(plaintext);
   } catch {
-    return '🔒 Unable to decrypt this message on this device.';
+    return '🔒 Unable to decrypt this message. The private key on this device does not match the key used when it was sent. If you changed phones, browsers, or app installations, use the original device; cross-device key recovery is not yet configured.';
   }
 }
 export function isEncryptedMessage(body: string): boolean {
