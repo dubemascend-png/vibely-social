@@ -35,7 +35,7 @@ export function isOnline(): boolean {
 export async function withRetry<T>(operation: () => Promise<T>, options: { attempts?: number; baseDelayMs?: number } = {}): Promise<T> {
   const attempts = Math.max(1, options.attempts ?? 3);
   const baseDelayMs = Math.max(100, options.baseDelayMs ?? 350);
-  let lastError: unknown;
+  let lastError: ServiceError = new ServiceError('The request could not be completed.');
   for (let attempt = 0; attempt < attempts; attempt++) {
     if (!isOnline()) throw new ServiceError('You appear to be offline. Check your connection and try again.', { retryable: true });
     try {
