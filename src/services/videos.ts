@@ -12,7 +12,7 @@ export async function listVideos(options: { limit?: number; before?: string } = 
   });
 }
 export async function saveVideo(userId: string, postId: string, collectionType: 'watch_later' | 'history' = 'watch_later', positionSeconds = 0) {
-  const { error } = await supabase.from('video_library_items').upsert({ user_id: userId, post_id: postId, collection_type: collectionType, last_position_seconds: Math.max(0, positionSeconds) }, { onConflict: 'user_id,post_id,collection_type' });
+  const { error } = await supabase.from('video_library_items').upsert({ user_id: userId, post_id: postId, collection_type: collectionType, last_position_seconds: Math.max(0, positionSeconds), updated_at: new Date().toISOString(), ...(collectionType === 'history' ? { watched_at: new Date().toISOString() } : {}) }, { onConflict: 'user_id,post_id,collection_type' });
   throwIfError(error);
 }
 export async function removeSavedVideo(userId: string, postId: string, collectionType: 'watch_later' | 'history' = 'watch_later') {
