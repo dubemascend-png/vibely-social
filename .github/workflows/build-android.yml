@@ -13,7 +13,7 @@ on:
     branches: [main]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build-apks:
@@ -27,7 +27,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -39,7 +38,7 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Install web dependencies
-        run: npm ci
+        run: npm install
 
       - name: Install Capacitor tooling
         run: npm install --no-save @capacitor/core@^7 @capacitor/cli@^7 @capacitor/android@^7
@@ -107,3 +106,15 @@ jobs:
           path: artifacts/*.apk
           if-no-files-found: error
           retention-days: 30
+
+      - name: Publish public APK downloads
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: android-downloads
+          name: Vibe.ly Android Downloads
+          prerelease: true
+          make_latest: false
+          overwrite_files: true
+          files: |
+            artifacts/Vibe-ly-Social.apk
+            artifacts/Vibe-ly-Admin.apk
