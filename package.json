@@ -12,16 +12,16 @@
     "build:vite": "tsc -b && vite build"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.57.0",
+    "@supabase/supabase-js": "^2.118.0",
     "lucide-react": "^0.468.0",
-    "next": "^15.5.6",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "next": "^16.4.2",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
