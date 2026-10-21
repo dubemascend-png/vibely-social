@@ -1,0 +1,17 @@
+{
+  "name": "vibe.ly — Find Your People",
+  "short_name": "vibe.ly",
+  "description": "Find Your People. Feel the Vibe.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f6fb",
+  "theme_color": "#7257ff",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
