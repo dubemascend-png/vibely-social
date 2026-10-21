@@ -21,7 +21,7 @@ const ago = (date: string) => { const n = Math.max(1, Math.floor((Date.now() - n
 const durationLabel = (seconds: number) => Math.floor(seconds / 60) + ':' + String(Math.floor(seconds % 60)).padStart(2, '0');
 
 /** Vibe video home. Real video posts are supplied by the existing Supabase-backed feed. */
-export default function Vibe({ posts, onCreate, currentUserId, onLike, onComment, onPlay, onComplete, onProfileVisit }: { posts: VideoPost[]; onCreate: () => void; currentUserId: string; onLike: (postId: string) => void; onComment: (postId: string, body: string) => void; onPlay: (postId: string) => void; onComplete: (postId: string) => void; onProfileVisit: (profileId: string) => void }) {
+export default function Vibe({ posts, onCreate, currentUserId, onLike, onComment, onPlay, onProgress, onComplete, onProfileVisit }: { posts: VideoPost[]; onCreate: () => void; currentUserId: string; onLike: (postId: string) => void; onComment: (postId: string, body: string) => void; onPlay: (postId: string) => void; onProgress: (postId:string,position:number,duration:number)=>void; onComplete: (postId: string) => void; onProfileVisit: (profileId: string) => void }) {
   const [category, setCategory] = useState('All');
   const [search, setSearch] = useState('');
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
@@ -107,6 +107,6 @@ export default function Vibe({ posts, onCreate, currentUserId, onLike, onComment
     </>}
     {backendError&&<div className="vibe-backend-error" role="alert">{backendError}<button onClick={()=>setBackendError('')} aria-label="Dismiss error"><X size={13}/></button></div>}
     {playlistTarget&&<div className="vibe-playlist-picker-backdrop" role="dialog" aria-modal="true" aria-label="Add video to playlist"><section className="vibe-playlist-picker"><header><b>Add to playlist</b><button onClick={()=>setPlaylistTarget(null)} aria-label="Close"><X size={18}/></button></header><p>{playlistTarget.caption||'Vibe video'}</p>{playlists.length?playlists.map(p=><button key={p.id} onClick={()=>void addToPlaylist(p.id)}><ListVideo size={16}/>{p.title}</button>):<div className="vibe-empty-state"><h3>No playlists yet</h3><p>Create a playlist in Library first, then come back to add this video.</p><button onClick={()=>{setPlaylistTarget(null);setView('library')}}>Open Library</button></div>}</section></div>}
-    {selectedVideo && <VideoWatch video={selectedVideo} posts={posts.filter(p=>p.media_type==='video'&&!!p.media_url)} onClose={()=>setSelectedVideo(null)} onSelect={setSelectedVideo} onLike={onLike} onComment={onComment} onPlay={onPlay} onComplete={onComplete} onProfileVisit={onProfileVisit}/>}
+    {selectedVideo && <VideoWatch video={selectedVideo} posts={posts.filter(p=>p.media_type==='video'&&!!p.media_url)} onClose={()=>setSelectedVideo(null)} onSelect={setSelectedVideo} onLike={onLike} onComment={onComment} onPlay={onPlay} onProgress={onProgress} onComplete={onComplete} onProfileVisit={onProfileVisit}/>}
   </section>;
 }
