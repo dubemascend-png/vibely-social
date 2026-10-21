@@ -30,7 +30,7 @@ export default function Vibe({ posts, onCreate }: { posts: VideoPost[]; onCreate
     let list = videoPosts.filter(p => !search.trim() || (p.caption || '').toLowerCase().includes(search.toLowerCase()) || (p.profiles?.display_name || p.profiles?.username || '').toLowerCase().includes(search.toLowerCase()));
     if (category === 'Shorts') list = list.filter(p => /#shorts|#vibeshort/i.test(p.caption || ''));
     if (sort === 'newest') return [...list].sort((a, b) => +new Date(b.created_at) - +new Date(a.created_at));
-    return [...list].sort((a, b) => (b.likes?.length || 0) * 2 + (b.comments?.length || 0) - ((a.likes?.length || 0) * 2 + (a.comments?.length || 0));
+    return [...list].sort((a, b) => { const scoreA = (a.likes?.length || 0) * 2 + (a.comments?.length || 0); const scoreB = (b.likes?.length || 0) * 2 + (b.comments?.length || 0); return scoreB - scoreA; });
   }, [videoPosts, search, category, sort]);
 
   const shareVideo = async (post: VideoPost) => {
@@ -64,7 +64,7 @@ export default function Vibe({ posts, onCreate }: { posts: VideoPost[]; onCreate
             </button>
             <div className="vibe-card-details">
               <span className="vibe-creator-avatar">{post.profiles?.avatar_url ? <img src={post.profiles.avatar_url} alt="" loading="lazy"/> : creator.slice(0,1).toUpperCase()}</span>
-              <div className="vibe-card-copy"><button className="vibe-card-title" onClick={() => { window.location.href = window.location.pathname + '?vibe=' + encodeURIComponent(post.id); }}>{post.caption?.trim() || 'A video from ' + creator}</button><div className="vibe-card-channel">{creator}{post.profiles?.is_verified && <CheckCircle2 size={13} fill="#ff3b5c" color="#ff3b5c" aria-label="Verified creator"/>}</div><div className="vibe-card-meta">{(post.likes?.length || 0).toLocaleString()} likes <span>·</span> {ago(post.created_at)}</div></div>
+              <div className="vibe-card-copy"><button className="vibe-card-title" onClick={() => { setSelectedVideo(post); }}>{post.caption?.trim() || 'A video from ' + creator}</button><div className="vibe-card-channel">{creator}{post.profiles?.is_verified && <CheckCircle2 size={13} fill="#ff3b5c" color="#ff3b5c" aria-label="Verified creator"/>}</div><div className="vibe-card-meta">{(post.likes?.length || 0).toLocaleString()} likes <span>·</span> {ago(post.created_at)}</div></div>
               <div className="vibe-card-menu-wrap"><button className="vibe-card-menu-button" aria-label={'More options for ' + (post.caption || 'video')} aria-expanded={activeMenu === post.id} onClick={() => setActiveMenu(activeMenu === post.id ? null : post.id)}><MoreVertical size={19}/></button>
                 {activeMenu === post.id && <div className="vibe-card-menu" role="menu">
                   <button role="menuitem" onClick={() => { setWatchLater(v => v.includes(post.id) ? v.filter(id => id !== post.id) : [...v, post.id]); setSavedNotice(isSaved ? 'Removed from Watch Later (this session).' : 'Added to Watch Later (this session).'); setActiveMenu(null); }}><Clock3 size={15}/>{isSaved ? 'Remove from Watch Later' : 'Save to Watch Later'}</button>
