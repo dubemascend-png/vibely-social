@@ -20,7 +20,7 @@ const ago = (date: string) => { const n = Math.max(1, Math.floor((Date.now() - n
 const durationLabel = (seconds: number) => Math.floor(seconds / 60) + ':' + String(Math.floor(seconds % 60)).padStart(2, '0');
 
 /** Vibe video home. Real video posts are supplied by the existing Supabase-backed feed. */
-export default function Vibe({ posts, onCreate, onLike, onComment, onPlay, onComplete, onProfileVisit }: { posts: VideoPost[]; onCreate: () => void; onLike: (postId: string) => void; onComment: (postId: string, body: string) => void; onPlay: (postId: string) => void; onComplete: (postId: string) => void; onProfileVisit: (profileId: string) => void }) {
+export default function Vibe({ posts, onCreate, currentUserId, onLike, onComment, onPlay, onComplete, onProfileVisit }: { posts: VideoPost[]; onCreate: () => void; currentUserId: string; onLike: (postId: string) => void; onComment: (postId: string, body: string) => void; onPlay: (postId: string) => void; onComplete: (postId: string) => void; onProfileVisit: (profileId: string) => void }) {
   const [category, setCategory] = useState('All');
   const [search, setSearch] = useState('');
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
@@ -60,7 +60,7 @@ export default function Vibe({ posts, onCreate, onLike, onComment, onPlay, onCom
       <button className={view==='studio'?'active':''} onClick={()=>setView('studio')}><Clapperboard size={16}/> Studio</button>
       <button className={view==='settings'?'active':''} onClick={()=>setView('settings')}><Settings2 size={16}/> Settings</button>
     </nav>
-    {view==='shorts' ? <ShortsFeed posts={videoPosts} onClose={()=>setView('home')} onWatch={p=>{setView('home');setSelectedVideo(p)}}/> : view==='library' ? <VideoLibrary posts={posts.filter(p=>p.media_type==='video'&&!!p.media_url)} onWatch={setSelectedVideo}/> : view==='studio' ? <CreatorStudio posts={posts.filter(p=>p.media_type==='video'&&!!p.media_url)} onCreate={onCreate}/> : view==='channels' ? <ChannelHub posts={posts.filter(p=>p.media_type==='video'&&!!p.media_url)} onWatch={setSelectedVideo}/> : view==='settings' ? <VideoWellbeing/> : <>
+    {view==='shorts' ? <ShortsFeed posts={videoPosts} onClose={()=>setView('home')} onWatch={p=>{setView('home');setSelectedVideo(p)}}/> : view==='library' ? <VideoLibrary posts={posts.filter(p=>p.media_type==='video'&&!!p.media_url)} onWatch={setSelectedVideo}/> : view==='studio' ? <CreatorStudio posts={posts.filter(p=>p.media_type==='video'&&!!p.media_url)} onCreate={onCreate} currentUserId={currentUserId}/> : view==='channels' ? <ChannelHub posts={posts.filter(p=>p.media_type==='video'&&!!p.media_url)} onWatch={setSelectedVideo}/> : view==='settings' ? <VideoWellbeing/> : <>
     <div className="vibe-video-tools">
       <label className="vibe-video-search"><Search size={18}/><input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search videos and creators…" aria-label="Search videos"/>{search && <button onClick={() => setSearch('')} aria-label="Clear search"><X size={16}/></button>}</label>
       <button className={'vibe-sort-button ' + (sort === 'newest' ? 'selected' : '')} onClick={() => setSort(v => v === 'newest' ? 'recommended' : 'newest')}><Clock3 size={15}/>{sort === 'newest' ? 'Newest first' : 'Recommended'}<ChevronDown size={14}/></button>
