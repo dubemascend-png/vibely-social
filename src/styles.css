@@ -52,3 +52,10 @@
 .image-change{display:inline-flex;align-items:center;justify-content:center;border:1px solid #e8e2f5;background:#fff;border-radius:10px;padding:9px 12px;color:#7257ff;font-size:11px;font-weight:700;cursor:pointer}
 .image-change input{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;clip-path:inset(50%)}
 .image-change:has(input:disabled){opacity:.6;cursor:wait}
+
+
+/* WhatsApp-style message delivery receipts */
+.message-meta{display:flex!important;align-items:center;justify-content:flex-end;gap:5px}
+.message-receipt{display:inline-flex;align-items:center;line-height:1;color:currentColor;opacity:.78}
+.message-receipt.is-read{color:#42c9ff;opacity:1}
+.theirs .message-meta{justify-content:flex-start}
