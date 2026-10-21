@@ -76,3 +76,10 @@ The script creates or reuses two demo profiles, sample posts, follows, a communi
 ### Verification
 
 Run `npm run lint` and `npm run build` before shipping changes. Feature phases should also include a manual authenticated-user check and a cross-user RLS check for any new or changed data path.
+
+
+### Admin dashboard coverage
+
+The admin overview uses the permission-checked `admin_dashboard_summary()` RPC for live counts of registered users, posts, videos, communities, messages, reports, open reports, pending appeals, message requests, active stories, and administrators. The Audit log section reads the latest 100 records from `admin_audit_log`; its RLS policy allows only active administrators with `*` or `audit.view` permission to read records.
+
+Authentication errors are normalized into actionable messages. If a user sees “Invalid login credentials”, the project logs cannot distinguish a mistyped password from an account that does not exist in this Supabase project. Verify that the app is pointed at the intended project before attempting account recovery. Password reset emails are subject to the configured Supabase email provider and its rate limits.
