@@ -1,0 +1,15 @@
+{
+  "id": "/vibely-social/admin/",
+  "name": "Vibe.ly Admin",
+  "short_name": "Vibe.ly Admin",
+  "description": "Secure Vibe.ly platform administration and community safety tools.",
+  "start_url": "/vibely-social/admin/",
+  "scope": "/vibely-social/admin/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#111020",
+  "theme_color": "#7257ff",
+  "icons": [
+    { "src": "/vibely-social/admin-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
