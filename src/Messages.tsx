@@ -3,6 +3,7 @@ import type { FormEvent } from 'react';
 import { MessageCircle, Search, Send, ArrowLeft, Plus, Users, LoaderCircle, Check, CheckCheck } from 'lucide-react';
 import { supabase } from './supabase';
 import CallPanel from './CallPanel';
+import { decryptMessage, encryptMessage, getDeviceIdentity, isEncryptedMessage } from './e2ee';
 
 type Profile={id:string;username:string|null;display_name:string|null;avatar_url:string|null;bio?:string|null};
 type Member={user_id:string};
@@ -12,7 +13,7 @@ type Message={id:string;conversation_id:string;sender_id:string;body:string;crea
 const initials=(s?:string|null)=>(s?.trim()[0]||'V').toUpperCase();
 const time=(s:string)=>new Date(s).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
 export default function Messages({currentUserId}:{currentUserId:string}){
- const [conversations,setConversations]=useState<Conversation[]>([]),[profiles,setProfiles]=useState<Profile[]>([]),[active,setActive]=useState<string|null>(null),[messages,setMessages]=useState<Message[]>([]),[draft,setDraft]=useState(''),[search,setSearch]=useState(''),[loading,setLoading]=useState(true),[sending,setSending]=useState(false),[starting,setStarting]=useState(false),[error,setError]=useState('');
+ const [conversations,setConversations]=useState<Conversation[]>([]),[profiles,setProfiles]=useState<Profile[]>([]),[active,setActive]=useState<string|null>(null),[messages,setMessages]=useState<Message[]>([]),[draft,setDraft]=useState(''),[search,setSearch]=useState(''),[loading,setLoading]=useState(true),[sending,setSending]=useState(false),[starting,setStarting]=useState(false),[error,setError]=useState(''),[identity,setIdentity]=useState<any>(null),[decryptedBodies,setDecryptedBodies]=useState<Record<string,string>>({});
  const activeConversation=conversations.find(c=>c.id===active)||null;
  const loadInbox=useCallback(async()=>{setLoading(true);setError('');const {data,error}=await supabase.from('conversations').select('id,is_group,title,created_by,created_at,conversation_members(user_id)').order('created_at',{ascending:false}).limit(100);if(error){setError(error.message);setLoading(false);return}const rows=(data||[]) as ConversationRow[];const otherIds=[...new Set(rows.flatMap(c=>c.conversation_members.map(m=>m.user_id).filter(id=>id!==currentUserId)))];let people:Profile[]=[];if(otherIds.length){const p=await supabase.from('profiles').select('id,username,display_name,avatar_url,bio').in('id',otherIds);if(p.error)setError(p.error.message);else people=(p.data||[]) as Profile[]}setProfiles(people);setConversations(rows.map(c=>({...c,otherProfile:people.find(p=>c.conversation_members.some(m=>m.user_id===p.id&&p.id!==currentUserId))})));setLoading(false)},[currentUserId]);
  useEffect(()=>{void loadInbox()},[loadInbox]);
