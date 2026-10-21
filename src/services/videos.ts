@@ -1,5 +1,6 @@
 import { supabase } from '../supabase';
 import { throwIfError, withRetry } from './request';
+import { trackEvent } from './analytics';
 
 export async function listVideos(options: { limit?: number; before?: string } = {}) {
   const limit = Math.min(50, Math.max(1, options.limit ?? 20));
@@ -22,6 +23,7 @@ export async function removeSavedVideo(userId: string, postId: string, collectio
 export async function recordPlayback(userId: string, postId: string, eventType: 'start' | 'progress' | 'complete', positionSeconds = 0, durationSeconds = 0) {
   const { error } = await supabase.from('video_playback_events').insert({ user_id: userId, post_id: postId, event_type: eventType, event_key: crypto.randomUUID(), position_seconds: Math.max(0, positionSeconds), duration_seconds: Math.max(0, durationSeconds) });
   throwIfError(error);
+  if (eventType === 'complete') await trackEvent(userId, 'video_watched', { post_id: postId, duration_seconds: durationSeconds });
 }
 
 export async function listVideoLibrary(userId: string, collectionType: 'watch_later' | 'history' = 'watch_later', limit = 100) {
