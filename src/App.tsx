@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { FormEvent, ChangeEvent } from 'react';
 import type { User } from '@supabase/supabase-js';
 import { supabase, supabaseConfigured, getAppRedirectUrl } from './supabase';
