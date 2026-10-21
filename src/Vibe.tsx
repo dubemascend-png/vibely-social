@@ -14,14 +14,14 @@ const ago = (date: string) => { const n = Math.max(1, Math.floor((Date.now() - n
 const durationLabel = (seconds: number) => Math.floor(seconds / 60) + ':' + String(Math.floor(seconds % 60)).padStart(2, '0');
 
 /** Vibe video home. Real video posts are supplied by the existing Supabase-backed feed. */
-export default function Vibe({ posts, currentUserId, onCreate }: { posts: VideoPost[]; currentUserId: string; onCreate: () => void }) {
+export default function Vibe({ posts, onCreate }: { posts: VideoPost[]; onCreate: () => void }) {
   const [category, setCategory] = useState('All');
   const [search, setSearch] = useState('');
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [watchLater, setWatchLater] = useState<string[]>([]);
   const [hiddenVideos, setHiddenVideos] = useState<string[]>([]);
   const [hiddenChannels, setHiddenChannels] = useState<string[]>([]);
-  const [savedNotice, setSavedNotice] = useState('');
+  const [savedNotice, setSavedNotice] = useState(''), [selectedVideo, setSelectedVideo] = useState<VideoPost | null>(null);
   const [sort, setSort] = useState<'recommended' | 'newest'>('recommended');
   const [shortsMode, setShortsMode] = useState(false);
 
@@ -57,7 +57,7 @@ export default function Vibe({ posts, currentUserId, onCreate }: { posts: VideoP
           const creator = post.profiles?.display_name || post.profiles?.username || 'Vibe creator';
           const isSaved = watchLater.includes(post.id);
           return <article className="vibe-video-card" key={post.id}>
-            <button className="vibe-thumbnail" onClick={() => { window.location.href = window.location.pathname + '?vibe=' + encodeURIComponent(post.id); }} aria-label={'Watch ' + (post.caption || 'video')}>
+            <button className="vibe-thumbnail" onClick={() => { setSelectedVideo(post); }} aria-label={'Watch ' + (post.caption || 'video')}>
               <video src={post.media_url || undefined} preload="metadata" muted playsInline tabIndex={-1} onLoadedMetadata={e => { const d=e.currentTarget.duration; const badge=e.currentTarget.parentElement?.querySelector('.vibe-duration'); if(badge && Number.isFinite(d)) badge.textContent=durationLabel(d); }} />
               <span className="vibe-duration">Video</span><span className="vibe-play-overlay"><Play size={23} fill="currentColor"/></span>
               {isSaved && <span className="vibe-saved-flag"><Clock3 size={12}/> Saved</span>}
@@ -79,5 +79,6 @@ export default function Vibe({ posts, currentUserId, onCreate }: { posts: VideoP
         })}
       </div>}
     <div className="vibe-video-footer-note"><span><Heart size={14}/> Made for your interests</span><span>Recommendations are a starter ranking based on available likes and comments. // TODO: connect backend for watch-time and satisfaction signals.</span></div>
+    {selectedVideo && <div className="vibe-watch-overlay" role="dialog" aria-modal="true" aria-label="Video player" onClick={() => setSelectedVideo(null)}><section className="vibe-watch-dialog" onClick={e => e.stopPropagation()}><header><div><b>{selectedVideo.caption?.trim() || 'Vibe video'}</b><small>{selectedVideo.profiles?.display_name || selectedVideo.profiles?.username || 'Vibe creator'}</small></div><button onClick={() => setSelectedVideo(null)} aria-label="Close video player"><X size={20}/></button></header><video src={selectedVideo.media_url || undefined} controls autoPlay playsInline preload="metadata"/><p>{selectedVideo.caption || 'Watch and discover on Vibe.'}</p><small className="vibe-watch-placeholder">Full watch page, advanced controls, comments, chapters, and Up Next arrive in Phase B.</small></section></div>}
   </section>;
 }
