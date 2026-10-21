@@ -23,3 +23,22 @@ export async function leaveCommunity(communityId: string, userId: string) {
   const { error } = await supabase.from('community_members').delete().eq('community_id', communityId).eq('user_id', userId);
   throwIfError(error);
 }
+
+export async function listCommunityPosts(communityId: string, limit = 100) {
+  return withRetry(async () => {
+    const { data, error } = await supabase.from('community_posts').select('id,community_id,author_id,body,created_at').eq('community_id', communityId).order('created_at', { ascending: false }).limit(Math.min(100, Math.max(1, limit)));
+    throwIfError(error);
+    return data ?? [];
+  });
+}
+export async function createCommunityPost(communityId: string, authorId: string, body: string) {
+  const cleanBody = body.trim();
+  if (!cleanBody || cleanBody.length > 5000) throw new Error('Community posts must be between 1 and 5,000 characters.');
+  const { data, error } = await supabase.from('community_posts').insert({ community_id: communityId, author_id: authorId, body: cleanBody }).select('id,community_id,author_id,body,created_at').single();
+  throwIfError(error);
+  return data;
+}
+export async function deleteOwnCommunityPost(postId: string, authorId: string) {
+  const { error } = await supabase.from('community_posts').delete().eq('id', postId).eq('author_id', authorId);
+  throwIfError(error);
+}
