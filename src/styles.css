@@ -365,3 +365,75 @@
 .message-reaction-chip{display:inline-flex;align-items:center;justify-content:center;margin:4px 4px 0 0;min-width:24px;height:23px;padding:0 7px;border:1px solid #e8e0ff;border-radius:999px;background:#fff;color:#7657d9;font-size:12px;box-shadow:0 1px 2px #0000000b}
 .vs-story-progress span{background:#ffffff70;transition:background .18s}.vs-story-progress span.complete,.vs-story-progress span.current{background:#fff}
 .bubble-row{position:relative}
+
+
+/* Vibe video home — Phase A presentation layer */
+:root{--vibe-accent:#ff3b5c;--vibe-video-ink:#17171b;--vibe-video-muted:#74747f;--vibe-video-border:#e8e8ed;--vibe-video-surface:#fff;--vibe-video-soft:#f5f5f8;--vibe-video-radius:12px}
+.vibe-video-home{width:100%;min-width:0;color:var(--vibe-video-ink);padding:4px 0 28px}
+.vibe-video-heading{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:0 0 24px}
+.vibe-video-heading h1{font-size:clamp(26px,3vw,34px);line-height:1.15;letter-spacing:-1.2px;margin:7px 0 8px;font-weight:850}
+.vibe-video-heading h1 span{color:var(--vibe-accent)}
+.vibe-video-heading p{font-size:13px;color:var(--vibe-video-muted);margin:0}
+.vibe-eyebrow{font-size:10px;letter-spacing:1.6px;font-weight:850;color:var(--vibe-accent)}
+.vibe-upload-button,.vibe-empty-state>button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;background:var(--vibe-accent);color:#fff;padding:12px 17px;font-size:12px;font-weight:800;box-shadow:0 5px 15px #ff3b5c2b;transition:transform .18s,box-shadow .18s}
+.vibe-upload-button:hover,.vibe-empty-state>button:hover{transform:translateY(-1px);box-shadow:0 8px 20px #ff3b5c36}
+.vibe-video-tools{display:flex;align-items:center;gap:12px;margin-bottom:17px}
+.vibe-video-search{display:flex;align-items:center;gap:10px;min-width:0;flex:1;border:1px solid var(--vibe-video-border);background:var(--vibe-video-soft);border-radius:999px;padding:0 15px;height:43px;color:#777784}
+.vibe-video-search:focus-within{border-color:#ff91a3;box-shadow:0 0 0 3px #ff3b5c15}
+.vibe-video-search input{border:0;outline:0;background:transparent;width:100%;min-width:0;font-size:13px;color:var(--vibe-video-ink)}
+.vibe-video-search button{display:grid;place-items:center;border:0;background:transparent;color:#777784}
+.vibe-sort-button{display:flex;align-items:center;gap:7px;white-space:nowrap;border:1px solid var(--vibe-video-border);border-radius:999px;background:var(--vibe-video-surface);padding:11px 13px;color:#4b4b55;font-size:11px;font-weight:750}
+.vibe-sort-button.selected{border-color:#ff9bad;background:#fff0f3;color:#c52d49}
+.vibe-category-row{display:flex;gap:8px;overflow-x:auto;padding:2px 0 15px;margin-bottom:6px;scrollbar-width:none}
+.vibe-category-row::-webkit-scrollbar{display:none}
+.vibe-category-row button{flex:0 0 auto;display:flex;align-items:center;gap:7px;border:1px solid transparent;border-radius:999px;background:#f1f1f5;color:#454550;padding:9px 14px;font-size:11px;font-weight:750;transition:background .18s,color .18s,transform .18s}
+.vibe-category-row button:hover{background:#e9e9ef}
+.vibe-category-row button.active{background:#202025;color:white}
+.vibe-category-row button:focus-visible,.vibe-video-home button:focus-visible{outline:3px solid #ff3b5c88;outline-offset:2px}
+.vibe-video-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:27px 18px;align-items:start}
+.vibe-video-card{min-width:0;position:relative}
+.vibe-thumbnail{position:relative;display:block;overflow:hidden;width:100%;aspect-ratio:16/9;border:0;border-radius:var(--vibe-video-radius);background:linear-gradient(135deg,#f0e9f3,#e7e8ef);padding:0;isolation:isolate}
+.vibe-thumbnail video{display:block;width:100%;height:100%;object-fit:cover;transition:transform .28s;pointer-events:none;background:#1c1c22}
+.vibe-video-card:hover .vibe-thumbnail video{transform:scale(1.025)}
+.vibe-duration{position:absolute;right:9px;bottom:9px;background:#17171bd9;color:white;border-radius:5px;padding:4px 6px;font-size:10px;font-variant-numeric:tabular-nums;font-weight:800}
+.vibe-play-overlay{position:absolute;inset:0;display:grid;place-items:center;color:white;background:#0000;opacity:0;transition:opacity .2s,background .2s}
+.vibe-video-card:hover .vibe-play-overlay,.vibe-thumbnail:focus-visible .vibe-play-overlay{opacity:1;background:#0002}
+.vibe-play-overlay svg{filter:drop-shadow(0 2px 4px #0007)}
+.vibe-saved-flag{position:absolute;left:8px;bottom:8px;display:flex;align-items:center;gap:4px;padding:4px 7px;background:#ff3b5c;color:white;border-radius:5px;font-size:9px;font-weight:800}
+.vibe-card-details{display:flex;align-items:flex-start;gap:10px;padding-top:12px}
+.vibe-creator-avatar{flex:0 0 35px;width:35px;height:35px;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:linear-gradient(145deg,#ffe2e8,#d9ccff);color:#7b3551;font-size:14px;font-weight:850}
+.vibe-creator-avatar img{width:100%;height:100%;object-fit:cover}
+.vibe-card-copy{flex:1;min-width:0;display:grid;gap:5px}
+.vibe-card-title{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;border:0;padding:0;background:transparent;color:var(--vibe-video-ink);text-align:left;font-size:13px;font-weight:800;line-height:1.45;letter-spacing:-.1px}
+.vibe-card-title:hover{color:#c52d49}
+.vibe-card-channel{display:flex;align-items:center;gap:5px;min-width:0;color:#777782;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vibe-card-meta{display:flex;align-items:center;gap:5px;color:#888893;font-size:10px}
+.vibe-card-menu-wrap{position:relative;flex:0 0 auto}
+.vibe-card-menu-button{display:grid;place-items:center;width:30px;height:30px;border:0;border-radius:50%;background:transparent;color:#777782;opacity:0;transition:background .15s,opacity .15s}
+.vibe-video-card:hover .vibe-card-menu-button,.vibe-card-menu-button:focus-visible,.vibe-card-menu-button[aria-expanded=true]{opacity:1}
+.vibe-card-menu-button:hover{background:#f1f1f5;color:#292932}
+.vibe-card-menu{position:absolute;z-index:6;right:0;top:30px;width:218px;padding:6px;border:1px solid #e8e8ee;border-radius:12px;background:#fff;box-shadow:0 14px 40px #17171b22;display:grid;gap:2px}
+.vibe-card-menu button{display:flex;align-items:center;gap:9px;border:0;border-radius:8px;padding:10px;background:transparent;text-align:left;color:#393943;font-size:11px}
+.vibe-card-menu button:hover{background:#f5f5f8}
+.vibe-card-menu button small{margin-left:auto;color:#9b90bc;font-size:8px;font-weight:850}
+.vibe-empty-state{display:grid;justify-items:center;text-align:center;padding:55px 20px 50px;border:1px dashed #dcdce5;border-radius:18px;background:linear-gradient(150deg,#fff,#faf9fc)}
+.vibe-empty-icon{display:grid;place-items:center;width:60px;height:60px;border-radius:20px;background:#fff0f3;color:var(--vibe-accent);margin-bottom:15px}
+.vibe-empty-state h2{font-size:19px;letter-spacing:-.4px;margin:0 0 8px}
+.vibe-empty-state p{max-width:380px;font-size:12px;line-height:1.7;color:#777782;margin:0 0 19px}
+.vibe-empty-state small{max-width:430px;margin-top:15px;color:#9696a0;font-size:10px;line-height:1.6}
+.vibe-inline-notice{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid #f6c5ce;border-radius:10px;background:#fff5f7;color:#9f2c42;padding:10px 12px;margin-bottom:14px;font-size:11px}
+.vibe-inline-notice button{border:0;background:transparent;color:inherit}
+.vibe-video-footer-note{display:flex;justify-content:space-between;gap:12px;margin-top:28px;padding-top:14px;border-top:1px solid #eeeef2;color:#92929b;font-size:9px;line-height:1.6}
+.vibe-video-footer-note span:first-child{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.vibe-watch-overlay{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:20px;background:#101014d9;backdrop-filter:blur(8px)}
+.vibe-watch-dialog{width:min(980px,100%);max-height:92vh;overflow:auto;border:1px solid #ffffff20;border-radius:18px;background:#17171c;color:#fff;box-shadow:0 28px 90px #0007}
+.vibe-watch-dialog header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 18px}
+.vibe-watch-dialog header div{display:grid;gap:5px;min-width:0}.vibe-watch-dialog header b{font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.vibe-watch-dialog header small{font-size:11px;color:#b8b8c2}
+.vibe-watch-dialog header button{flex:0 0 auto;display:grid;place-items:center;width:36px;height:36px;border:0;border-radius:50%;background:#ffffff12;color:white}
+.vibe-watch-dialog>video{display:block;width:100%;max-height:65vh;aspect-ratio:16/9;background:#000;object-fit:contain}
+.vibe-watch-dialog>p{padding:0 18px;margin:15px 0 8px;font-size:13px;white-space:pre-wrap}
+.vibe-watch-placeholder{display:block;padding:0 18px 18px;color:#b4b4bf;font-size:10px}
+@media(max-width:1100px){.vibe-video-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 15px}.vibe-card-menu-button{opacity:1}}
+@media(max-width:700px){.vibe-video-home{padding-top:0}.vibe-video-heading{align-items:flex-start;margin-bottom:17px}.vibe-video-heading h1{font-size:28px}.vibe-video-heading p{font-size:11px;max-width:230px;line-height:1.5}.vibe-upload-button{padding:10px 12px;font-size:10px;white-space:nowrap}.vibe-video-tools{gap:7px}.vibe-video-search{height:40px;padding:0 12px}.vibe-sort-button{padding:10px;font-size:0;gap:5px}.vibe-sort-button svg{width:16px;height:16px}.vibe-video-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 11px}.vibe-thumbnail{border-radius:9px}.vibe-card-details{gap:7px;padding-top:8px}.vibe-creator-avatar{width:28px;height:28px;flex-basis:28px;font-size:11px}.vibe-card-title{font-size:11px;line-height:1.4}.vibe-card-channel{font-size:9px}.vibe-card-meta{font-size:9px}.vibe-card-menu-button{width:24px;height:25px;opacity:1}.vibe-card-menu-button svg{width:16px}.vibe-card-menu{right:-2px;width:190px}.vibe-video-footer-note{display:grid}.vibe-watch-overlay{padding:8px}.vibe-watch-dialog{border-radius:12px}.vibe-watch-dialog>video{max-height:56vh}.vibe-empty-state{padding:40px 15px}.vibe-empty-state h2{font-size:17px}}
+@media(max-width:380px){.vibe-video-grid{grid-template-columns:1fr}.vibe-video-heading h1{font-size:25px}.vibe-upload-button{padding:9px 10px}.vibe-video-footer-note{font-size:8px}}
+@media(prefers-reduced-motion:reduce){.vibe-video-home *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
