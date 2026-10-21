@@ -20,3 +20,9 @@ export async function searchProfiles(query: string, limit = 20) {
   throwIfError(error);
   return data ?? [];
 }
+
+export async function listProfiles(excludeUserId: string, limit = 100) {
+  const { data, error } = await supabase.from('profiles').select('id,username,display_name,avatar_url,bio,is_private,is_verified').neq('id', excludeUserId).order('created_at', { ascending: false }).limit(Math.min(100, Math.max(1, limit)));
+  throwIfError(error);
+  return data ?? [];
+}
