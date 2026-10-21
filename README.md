@@ -51,10 +51,10 @@ Supabase remains the source of truth. New feature work should use the shared mod
 - `auth.ts`: session restoration, sign-in/up, password recovery, sign-out.
 - `profiles.ts`, `posts.ts`, `comments.ts`, `follows.ts`: account and feed operations.
 - `videos.ts`, `recommendations.ts`, `uploads.ts`, `analytics.ts`: playback, feedback, media and best-effort analytics.
-- `communities.ts`, `events.ts`, `messages.ts`, `notifications.ts`, `search.ts`: feature-specific data operations.
+- `communities.ts`, `events.ts`, `messages.ts`, `messageRequests.ts`, `notes.ts`, `stories.ts`, `polls.ts`, `drafts.ts`, `likes.ts`, `notifications.ts`, `search.ts`: feature-specific data operations.
 - `request.ts`: retryable request errors, offline awareness and friendly error messages.
 
-Service functions validate user input for usability, but database RLS remains the security boundary. Do not put Supabase service-role keys in frontend environment variables. See [the backend security audit](docs/backend/SECURITY_AUDIT.md) for the current findings and items that require deliberate review.
+The Phase A migrations add owner-scoped `post_drafts` and `analytics_events`, expiry-aware `stories` and `user_notes`, `message_requests`, and community rules/topics metadata. Service functions validate user input for usability, but database RLS remains the security boundary. Do not put Supabase service-role keys in frontend environment variables. See [the backend security audit](docs/backend/SECURITY_AUDIT.md) for the current findings and items that require deliberate review.
 
 ### Local environment
 
