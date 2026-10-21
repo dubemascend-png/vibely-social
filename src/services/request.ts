@@ -53,9 +53,11 @@ export function friendlyError(error: unknown, fallback = 'We couldn’t complete
   const value = toServiceError(error);
   const message = value.message.toLowerCase();
   if (!isOnline()) return 'You’re offline. Reconnect to continue.';
-  if (/invalid login credentials/.test(message)) return 'That email and password don’t match. Check them and try again.';
-  if (/email not confirmed/.test(message)) return 'Please confirm your email from the link we sent you before signing in.';
-  if (/rate limit|too many requests|over_email_send_rate_limit/.test(message)) return 'You’ve made several requests in a short time. Please wait a little and try again.';
+  if (/invalid login credentials|invalid_credentials/.test(message)) return 'We couldn’t sign you in with those details. Check your email and password, or choose “Forgot password?” to reset it.';
+  if (/email not confirmed|email_not_confirmed/.test(message)) return 'Please confirm your email using the verification link before signing in. If it has expired, request a new one.';
+  if (/refresh token not found|invalid refresh token|session not found/.test(message)) return 'Your saved sign-in session has expired. Sign in again to continue.';
+  if (/user is banned|user_banned|account is disabled/.test(message)) return 'This account is currently disabled. If you believe this is a mistake, contact Vibe.ly support or use the appeal option shown on the account notice.';
+  if (/rate limit|too many requests|over_email_send_rate_limit|over_request_rate_limit|429/.test(message)) return 'Too many attempts in a short time. Please wait a few minutes before trying again. For password recovery, avoid repeatedly requesting emails.';
   if (/duplicate key|already exists|unique constraint/.test(message)) return 'That item already exists. Refresh and try again.';
   if (/row-level security|permission denied|not allowed/.test(message)) return 'You don’t have permission to do that.';
   if (/failed to fetch|networkerror|fetch failed/.test(message)) return 'We couldn’t reach Vibe.ly. Check your connection and try again.';
