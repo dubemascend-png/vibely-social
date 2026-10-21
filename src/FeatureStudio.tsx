@@ -1,10 +1,17 @@
 'use client';
 
-import { useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Activity, Bell, Clock3, Copy, Globe2, LockKeyhole, Mic, Moon, Palette, Plus, Radio, Search, ShieldCheck, Sparkles, Sticker, Sun, Users, X, Zap } from 'lucide-react';
 import { aiService } from './aiService';
+import { supabase } from './supabase';
 
-type Props = { onClose: () => void; onThemeChange?: (dark: boolean) => void };
+type Props = { onClose: () => void; userId: string; onThemeChange?: (dark: boolean) => void };
+type Room={id:string;title:string;category:string;members:number;emoji:string;description:string;slug:string;privacy:string};
+type EventItem={id:string;title:string;description:string;starts_at:string;location:string;community_id:string};
+type PollOption={id:string;option_text:string;option_position:number;vote_count:number;my_vote:boolean};
+type PollItem={id:string;question:string;created_at:string;closes_at:string|null;options:PollOption[]};
+type StudioSettings={quiet_hours_enabled:boolean;quiet_hours_start:string;quiet_hours_end:string;default_disappearing_seconds:number;view_once_media_enabled:boolean;show_spam_risk_hints:boolean;confirm_before_report:boolean;two_step_login_reminders:boolean;theme_color:string;chat_wallpaper:string;data_saver_enabled:boolean;notifications_enabled:boolean};
+const defaultSettings:StudioSettings={quiet_hours_enabled:false,quiet_hours_start:'22:00',quiet_hours_end:'07:00',default_disappearing_seconds:0,view_once_media_enabled:false,show_spam_risk_hints:true,confirm_before_report:true,two_step_login_reminders:true,theme_color:'#7257ff',chat_wallpaper:'default',data_saver_enabled:false,notifications_enabled:true};
 type Tab = 'AI' | 'Discover' | 'Privacy' | 'Voice' | 'Creator' | 'Data saver' | 'Safety' | 'Personalize' | 'Notifications';
 
 const tabs: { id: Tab; icon: typeof Sparkles; label: string }[] = [
@@ -18,25 +25,21 @@ const tabs: { id: Tab; icon: typeof Sparkles; label: string }[] = [
   { id: 'Personalize', icon: Palette, label: 'Personalize' },
   { id: 'Notifications', icon: Bell, label: 'Notifications' },
 ];
-const rooms = [
-  { title: 'Creators Circle', category: 'Creative', members: '2.4k', emoji: '🎨', description: 'Share your work, learn together, and find collaborators.' },
-  { title: 'Tech & Startups', category: 'Technology', members: '8.1k', emoji: '💡', description: 'Ideas, launches, and thoughtful tech conversations.' },
-  { title: 'Food Lovers', category: 'Lifestyle', members: '1.7k', emoji: '🍜', description: 'Recipes, restaurant finds, and kitchen experiments.' },
-  { title: 'Football Lounge', category: 'Sports', members: '6.3k', emoji: '⚽', description: 'Match-day chat and community predictions.' },
-];
 function Toggle({ label, description, initial = false, onChange }: { label: string; description?: string; initial?: boolean; onChange?: (v: boolean) => void }) {
   const [enabled, setEnabled] = useState(initial);
+  useEffect(() => setEnabled(initial), [initial]);
   return <div className="vs-setting"><span><b>{label}</b>{description && <small>{description}</small>}</span><button className={'vs-switch' + (enabled ? ' is-on' : '')} role="switch" aria-checked={enabled} aria-label={label} onClick={() => { const next = !enabled; setEnabled(next); onChange?.(next); }}>{enabled ? 'On' : 'Off'}</button></div>;
 }
 function MockTag() { return <span className="vs-mock-tag">DEMO / PLACEHOLDER</span>; }
 
-export default function FeatureStudio({ onClose, onThemeChange }: Props) {
+export default function FeatureStudio({ onClose, userId, onThemeChange }: Props) {
   const [tab, setTab] = useState<Tab>('AI');
   const [toast, setToast] = useState('');
   const [busy, setBusy] = useState(false);
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('All');
   const [joined, setJoined] = useState<string[]>([]);
+  const [rooms,setRooms]=useState<Room[]>([]);const [events,setEvents]=useState<EventItem[]>([]);const [rsvpedIds,setRsvpedIds]=useState<string[]>([]);const [polls,setPolls]=useState<PollItem[]>([]);const [settings,setSettings]=useState<StudioSettings>(defaultSettings);const [backendError,setBackendError]=useState('');const [savingSettings,setSavingSettings]=useState(false);
   const [sampleMessage, setSampleMessage] = useState('Are we still meeting tomorrow?');
   const [result, setResult] = useState('');
   const [pollQuestion, setPollQuestion] = useState('');
@@ -55,7 +58,7 @@ export default function FeatureStudio({ onClose, onThemeChange }: Props) {
   const [stickerName, setStickerName] = useState('');
   const storyTouchStart = useRef(0);
   const [broadcastName, setBroadcastName] = useState('');
-  const filteredRooms = useMemo(() => rooms.filter(room => (category === 'All' || room.category === category) && (room.title + ' ' + room.description).toLowerCase().includes(query.toLowerCase())), [category, query]);
+  const filteredRooms = useMemo(() => rooms.filter(room => (category === 'All' || room.category === category) && (room.title + ' ' + room.description).toLowerCase().includes(query.toLowerCase())), [rooms,category, query]);
   const notify = (text: string) => { setToast(text); window.setTimeout(() => setToast(''), 2400); };
   async function runAI(action: 'replies' | 'translate' | 'transcribe' | 'catch-up') {
     setBusy(true); setResult('');
