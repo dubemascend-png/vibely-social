@@ -33,6 +33,13 @@ These need a function-by-function review of function body, intended caller, gran
 - Added community `rules`, `topics`, `cover_url`, and `updated_at` metadata.
 - Revoked anonymous execution of `admin_set_profile_verified` while retaining authenticated execution for its internal admin permission check. Revoked direct RPC execution of the trigger-only `enforce_vibely_publication_permissions()` function; trigger behavior remains intact.
 
+## Current residual risks
+
+- Supabase Security Advisor still reports 13 authenticated-callable `SECURITY DEFINER` functions. Several reviewed functions have internal permission/ownership checks, but the remaining functions should continue to be reviewed individually rather than blanket-revoked.
+- Supabase Auth's leaked-password protection is disabled in project settings; enable it in the Supabase Auth security settings.
+- The current profile SELECT policy still permits signed-in users to read profile rows, and the existing posts policy does not yet consistently apply `profiles.is_private` to public posts. **Private-account privacy is not complete yet.** The attempt to apply a broader follow-request/private-post policy migration was blocked, so no such change was applied.
+- Follow requests for private accounts are not yet implemented end-to-end; do not treat the current direct-follow behavior as a complete private-account workflow.
+
 ## Follow-up security checks
 
 1. Continue reviewing the remaining SECURITY DEFINER functions and grants. The reviewed admin/moderation functions contain internal permission checks; the analytics RPC verifies post ownership; message read/delivery RPCs verify conversation membership. Revisit any function whose body changes.
