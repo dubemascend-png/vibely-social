@@ -1,4 +1,5 @@
 name: Deploy vibe.ly to GitHub Pages
+# Publishes the static site and APK files from public/ to GitHub Pages.
 
 on:
   push:
