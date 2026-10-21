@@ -21,7 +21,7 @@ const ago = (date: string) => { const n = Math.max(1, Math.floor((Date.now() - n
 const durationLabel = (seconds: number) => Math.floor(seconds / 60) + ':' + String(Math.floor(seconds % 60)).padStart(2, '0');
 
 /** Vibe video home. Real video posts are supplied by the existing Supabase-backed feed. */
-export default function Vibe({ posts, onCreate, currentUserId, onLike, onComment, onPlay, onProgress, onComplete, onProfileVisit }: { posts: VideoPost[]; onCreate: () => void; currentUserId: string; onLike: (postId: string) => void; onComment: (postId: string, body: string) => void; onPlay: (postId: string) => void; onProgress: (postId:string,position:number,duration:number)=>void; onComplete: (postId: string) => void; onProfileVisit: (profileId: string) => void }) {
+export default function Vibe({ posts, onCreate, currentUserId, onLike, onComment, onPlay, onProgress, onComplete, onProfileVisit }: { posts: VideoPost[]; onCreate: () => void; currentUserId: string; onLike: (postId: string) => void; onComment: (postId: string, body: string) => void; onPlay: (postId: string) => void; onProgress: (postId:string,position:number,duration:number)=>void; onComplete: (postId: string,duration?:number) => void; onProfileVisit: (profileId: string) => void }) {
   const [category, setCategory] = useState('All');
   const [search, setSearch] = useState('');
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
