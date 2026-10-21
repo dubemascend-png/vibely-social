@@ -26,3 +26,19 @@
 .chatheader{min-width:0}
 .chatheader>div{min-width:0}
 @media(max-width:760px){.messaging{grid-template-columns:minmax(0,1fr);min-height:68vh}.messaging .chatpanel{display:none}.messaging .inbox-hidden{display:none}.messaging:has(.inbox-hidden) .chatpanel{display:flex}.messaging:has(.inbox-hidden) .chatback{display:inline-flex}.chatheader{gap:7px;padding:0 9px}.chatheader .message-avatar{width:32px;height:32px;border-radius:11px}.chatheader b{font-size:11px}.chatheader small{font-size:8px}.vibely-call-tools{gap:4px!important}.call-icon-button{width:34px;height:34px;flex-basis:34px;border-radius:11px}}
+
+
+/* Followers and post ownership actions */
+.profile-stat-button{border:0;background:transparent;color:#7257ff;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;font:inherit}
+.profile-stat-button strong{font-size:18px}
+.profile-stat-button small{font-size:10px;color:#9b95aa}
+.profile-actions{display:flex;justify-content:center;margin-top:12px}
+.profile-actions button,.followers-panel .sectionhead button{border:1px solid #e8e2f5;background:#fff;border-radius:10px;padding:9px 13px;color:#7257ff;font-size:11px;font-weight:700;cursor:pointer}
+.followers-panel{margin:18px 0;padding:15px;border:1px solid #eeeaf6;border-radius:15px;background:#fff}
+.follower-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-top:1px solid #f2eff7}
+.follower-row>span:nth-child(2){display:flex;flex-direction:column;gap:4px;flex:1;min-width:0}
+.follower-row b{font-size:12px}.follower-row small{font-size:10px;color:#9b95aa}
+.follower-row button,.delete-post{border:1px solid #f1dada;background:#fff7f7;color:#b83c49;border-radius:9px;padding:8px 11px;font-size:10px;font-weight:700;cursor:pointer}
+.delete-post{display:block;margin:8px 0 10px auto}
+.follower-row button:disabled,.delete-post:disabled{opacity:.5;cursor:wait}
+@media(max-width:760px){.followers-panel{padding:12px}.follower-row{gap:8px}.profile-stat-button strong{font-size:16px}}
