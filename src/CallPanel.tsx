@@ -4,6 +4,15 @@ import { supabase } from './supabase';
 
 type Signal = { id:string; conversation_id:string; sender_id:string; recipient_id:string; signal_type:'offer'|'answer'|'ice'|'hangup'|'decline'; media_type:'audio'|'video'; payload:any };
 type Props = { conversationId:string; currentUserId:string; remoteUserId:string; remoteName:string };
+function explainCallError(error:unknown){
+ const e=error as {name?:string;message?:string;code?:string};const message=(e?.message||'').toLowerCase();
+ if(e?.name==='NotAllowedError'||e?.name==='PermissionDeniedError'||message==='permission denied'||message.includes('permission denied')||message.includes('notallowederror'))return 'Microphone/camera permission was denied. In Chrome, tap the site controls beside the address, set Microphone and Camera to Allow, then reload Vibe.ly. Android: Settings → Apps → Chrome → Permissions → allow Camera and Microphone.';
+ if(e?.name==='NotFoundError'||e?.name==='DevicesNotFoundError')return 'No microphone or camera was found. Connect or enable the device and try again.';
+ if(e?.name==='NotReadableError'||e?.name==='TrackStartError')return 'Your microphone or camera is being used by another app. Close other calling apps and try again.';
+ if(e?.name==='SecurityError'||message.includes('secure context'))return 'Calls need a secure HTTPS connection. Open Vibe.ly from its https:// website, not an embedded or insecure page.';
+ if(message.includes('row-level security')||message.includes('permission'))return 'Vibe.ly blocked the call request. Please sign out and back in, then retry. If it continues, contact support with this message: '+(e?.message||'permission denied');
+ return e?.message||'Could not start the call. Check microphone/camera permissions and try again.';
+}
 
 export default function CallPanel({conversationId,currentUserId,remoteUserId,remoteName}:Props) {
  const [incoming,setIncoming]=useState<Signal|null>(null);
@@ -41,8 +50,8 @@ export default function CallPanel({conversationId,currentUserId,remoteUserId,rem
    else if(s.signal_type==='hangup'||s.signal_type==='decline'){setStatus(s.signal_type==='decline'?'Call declined':'Call ended');cleanup()}
  }).subscribe();return()=>{void supabase.removeChannel(channel)}},[currentUserId,conversationId,remoteUserId,remoteName,callType,incoming,cleanup]);
 
- async function start(type:'audio'|'video'){try{setStatus('Requesting microphone/camera permission…');activeType.current=type;setCallType(type);const connection=await makePeer(type);const offer=await connection.createOffer();await connection.setLocalDescription(offer);await sendSignal('offer',type,offer);setStatus('Calling '+remoteName+'…')}catch(e){cleanup();setStatus(e instanceof Error?e.message:'Could not start the call. Allow microphone/camera access and try again.')}}
- async function accept(){if(!incoming)return;const offer=incoming;try{setStatus('Joining call…');activeType.current=offer.media_type;setCallType(offer.media_type);setIncoming(null);const connection=await makePeer(offer.media_type);await connection.setRemoteDescription(new RTCSessionDescription(offer.payload));const answer=await connection.createAnswer();await connection.setLocalDescription(answer);await supabase.from('call_signals').insert({conversation_id:conversationId,sender_id:currentUserId,recipient_id:remoteUserId,signal_type:'answer',media_type:offer.media_type,payload:answer});setStatus('Connecting…')}catch(e){cleanup();setStatus(e instanceof Error?e.message:'Could not accept the call. Check microphone/camera permissions.')}}
+ async function start(type:'audio'|'video'){try{setStatus('Requesting microphone/camera permission…');activeType.current=type;setCallType(type);const connection=await makePeer(type);const offer=await connection.createOffer();await connection.setLocalDescription(offer);await sendSignal('offer',type,offer);setStatus('Calling '+remoteName+'…')}catch(e){cleanup();setStatus(explainCallError(e))}}
+ async function accept(){if(!incoming)return;const offer=incoming;try{setStatus('Joining call…');activeType.current=offer.media_type;setCallType(offer.media_type);setIncoming(null);const connection=await makePeer(offer.media_type);await connection.setRemoteDescription(new RTCSessionDescription(offer.payload));const answer=await connection.createAnswer();await connection.setLocalDescription(answer);await supabase.from('call_signals').insert({conversation_id:conversationId,sender_id:currentUserId,recipient_id:remoteUserId,signal_type:'answer',media_type:offer.media_type,payload:answer});setStatus('Connecting…')}catch(e){cleanup();setStatus(explainCallError(e))}}
  async function endCall(){try{if(callType||incoming)await sendSignal(incoming?'decline':'hangup',callType||incoming!.media_type)}catch{}cleanup()}
  function toggleMute(){const next=!muted;local.current?.getAudioTracks().forEach(t=>t.enabled=!next);setMuted(next)}
  function toggleCamera(){const next=!cameraOff;local.current?.getVideoTracks().forEach(t=>t.enabled=!next);setCameraOff(next)}
