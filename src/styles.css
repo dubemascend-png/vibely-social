@@ -59,3 +59,6 @@
 .message-receipt{display:inline-flex;align-items:center;line-height:1;color:currentColor;opacity:.78}
 .message-receipt.is-read{color:#42c9ff;opacity:1}
 .theirs .message-meta{justify-content:flex-start}
+
+/* Installable web app controls */
+.install-app-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid #dcd3ff;border-radius:11px;background:#f2efff;color:#684cf0;padding:9px 12px;font-size:11px;font-weight:800;white-space:nowrap;cursor:pointer}.install-app-button:hover{background:#e9e2ff}.install-app-button span{font-size:16px;line-height:1}.top-install{flex:none}.auth-install{width:100%;margin-top:12px;padding:12px}.topbar .top-install{margin-left:-42px}@media(max-width:760px){.top-install{padding:8px;font-size:0;gap:0;width:32px;height:32px}.top-install span{font-size:17px}.topbar .top-install{margin-left:0}.auth-install{font-size:12px}}
