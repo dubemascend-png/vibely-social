@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="vibe.ly icon">
+  <defs>
+    <linearGradient id="vibe" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8B75FF"/>
+      <stop offset="1" stop-color="#5D43F2"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="36" fill="url(#vibe)"/>
+  <path d="M30 36h19l17 42 17-42h19L74 99H58L30 36Z" fill="#fff"/>
+  <circle cx="98" cy="28" r="9" fill="#FF8B9C"/>
+  <circle cx="110" cy="45" r="5" fill="#73E2EC"/>
+</svg>
