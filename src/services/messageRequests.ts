@@ -20,3 +20,21 @@ export async function respondToMessageRequest(requestId: string, recipientId: st
   throwIfError(error);
   return data as MessageRequest;
 }
+
+export async function acceptMessageRequest(request: MessageRequest, recipientId: string) {
+  if (request.recipient_id !== recipientId || request.status !== 'pending') throw new Error('This request is no longer available.');
+  const { data: conversation, error: conversationError } = await supabase.from('conversations').insert({ created_by: recipientId, is_group: false, title: null }).select('id').single();
+  throwIfError(conversationError);
+  if (!conversation) throw new Error('Could not create a conversation for this request.');
+  const members = await supabase.from('conversation_members').insert([{ conversation_id: conversation.id, user_id: recipientId }, { conversation_id: conversation.id, user_id: request.sender_id }]);
+  if (members.error) {
+    await supabase.from('conversations').delete().eq('id', conversation.id).eq('created_by', recipientId);
+    throwIfError(members.error);
+  }
+  const { data, error } = await supabase.from('message_requests').update({ status: 'accepted', conversation_id: conversation.id, updated_at: new Date().toISOString() }).eq('id', request.id).eq('recipient_id', recipientId).eq('status', 'pending').select('*').single();
+  if (error) {
+    await supabase.from('conversations').delete().eq('id', conversation.id).eq('created_by', recipientId);
+    throwIfError(error);
+  }
+  return { request: data as MessageRequest, conversationId: conversation.id };
+}
