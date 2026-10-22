@@ -23,7 +23,7 @@ async function loadOpsSection(){
  OPS([]);ER('');
  const permissions=profile?.permissions||[];
  const required:Record<string,string>={'Content':'content.review','Vibes':'content.review','Communities':'communities.view','Enforcement':'enforcement.view','Appeals':'appeals.review','Purple Verification':'verification.view','Messages Safety':'messages_safety.view','Analytics':'analytics.view','Communications':'communications.view','Support':'support.view','Admin Team & Roles':'admins.manage','System':'system.view'};
- if(required[section]&&!can(permissions,required[section])&&!(section==='Purple Verification'&&can(permissions,'users.manage')))return;
+ if(required[section]&&!can(permissions,required[section])&&!(section==='Purple Verification'&&(can(permissions,'users.manage')||can(permissions,'verification.manage'))))return;
  try{
   let result:any;
   if(section==='Content'||section==='Vibes')result=await supabase.from('posts').select('id,author_id,caption,media_type,media_url,visibility,created_at').order('created_at',{ascending:false}).limit(100);
