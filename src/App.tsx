@@ -45,7 +45,7 @@ export default function App(){
  const [darkTheme,setDarkTheme]=useState(()=>{try{const saved=window.localStorage.getItem('vibe-theme');return saved?saved==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches}catch{return false}});
  const loadStories=useCallback(async()=>{try{setActiveStories(await listActiveStories(100))}catch(error){setError(friendlyError(error,'Could not load stories. Please retry.'))}},[]);
  useEffect(()=>{
-  if(new URLSearchParams(window.location.search).get('community'))setTab('Communities');
+  const params=new URLSearchParams(window.location.search);if(params.get('community'))setTab('Communities');else if(params.get('tab')?.toLowerCase()==='games'||params.get('game')==='naija-rush')setTab('Games');
   const onPrompt=(event:Event)=>{event.preventDefault();setInstallPrompt(event as InstallPromptEvent)};
   const onInstalled=()=>{setInstallPrompt(null);setNotice('Vibe.ly has been installed on your device.')};
   window.addEventListener('beforeinstallprompt',onPrompt);window.addEventListener('appinstalled',onInstalled);
