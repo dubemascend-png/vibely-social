@@ -683,6 +683,11 @@ html[data-theme="dark"] .auth-password-toggle{color:#c0b1dd}
 html[data-theme="dark"] .auth-password-toggle:hover{background:#392b54;color:#e9ddff}
 
 
-/* Keep the complete desktop and mobile app navigation reachable on short screens. */
-@media(min-width:761px){.sidebar{height:calc(100dvh - 110px);max-height:calc(100dvh - 110px);overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;scrollbar-width:thin;scrollbar-color:#d8d1ee transparent}.sidebar::-webkit-scrollbar{width:6px}.sidebar::-webkit-scrollbar-thumb{background:#d8d1ee;border-radius:99px}.sidebar nav{flex:0 0 auto}.sidebar .sidebottom{flex-shrink:0}}
-@media(max-width:760px){.sidebar{top:62px;bottom:0;height:auto;max-height:none;overflow-x:hidden;overflow-y:auto;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin}.sidebar nav{flex:0 0 auto}.sidebar .sidebottom{flex-shrink:0}}
+/* Keep every social-app navigation item, including sign-in/sign-out actions, reachable. */
+.sidebar{box-sizing:border-box;min-height:0;overscroll-behavior-y:contain;scrollbar-width:thin;scrollbar-color:#d8d1ee transparent}
+.sidebar::-webkit-scrollbar{width:6px}
+.sidebar::-webkit-scrollbar-thumb{background:#d8d1ee;border-radius:99px}
+.sidebar nav{flex:0 0 auto;min-height:max-content}
+.sidebar .sidebottom{flex:0 0 auto}
+@media(min-width:761px){.sidebar{height:calc(100dvh - 110px);max-height:calc(100dvh - 110px);overflow-y:auto;overflow-x:hidden}.sidebar .sidebottom{margin-top:auto}}
+@media(max-width:760px){.sidebar{top:62px;bottom:0;height:auto;max-height:none;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:calc(20px + env(safe-area-inset-bottom))}.sidebar.show{display:flex}.sidebar nav{padding-bottom:8px}.sidebar .sidebottom{margin-top:25px}}
