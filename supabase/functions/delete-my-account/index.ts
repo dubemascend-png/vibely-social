@@ -48,12 +48,12 @@ Deno.serve(async (req: Request) => {
   let body: { confirmation?: unknown; reason?: unknown; details?: unknown };
   try { body = await req.json(); } catch { return response({ error: "Confirm account deletion to continue." }, 400); }
   if (body.confirmation !== "DELETE MY ACCOUNT") return response({ error: "Type DELETE MY ACCOUNT to confirm." }, 400);
-  if (typeof body.reason !== "string" || !reasons.has(body.reason)) return response({ error: "Choose a reason for leaving before deleting your account." }, 400);
+  const reason = typeof body.reason === "string" && reasons.has(body.reason) ? body.reason : "Other";
   const details = typeof body.details === "string" ? body.details.trim().slice(0, 2000) : "";
   const admin = createClient(url, serviceRoleKey, { auth: { persistSession: false, autoRefreshToken: false } });
   try {
     // Anonymous feedback only: do not retain the account ID or email with this survey response.
-    const { error: feedbackError } = await admin.from("account_deletion_feedback").insert({ reason: body.reason, details: details || null });
+    const { error: feedbackError } = await admin.from("account_deletion_feedback").insert({ reason, details: details || null });
     if (feedbackError) console.error("Could not save optional account deletion feedback:", feedbackError.message);
     for (const bucket of ["vibely-posts", "vibely-avatars"]) {
       const files = await collectUserFiles(admin, bucket, user.id);
