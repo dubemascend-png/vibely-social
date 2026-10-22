@@ -721,3 +721,13 @@ html[data-theme="dark"] .auth-password-toggle:hover{background:#392b54;color:#e9
 @keyframes rush-pulse{50%{transform:scale(1.08);opacity:.7}}
 @media(max-width:850px){.rush-track-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.rush-hero{grid-template-columns:1fr;min-height:0}.rush-hero-art{min-height:190px;grid-row:1}.rush-hero-copy{grid-row:2}.rush-bottom-grid{grid-template-columns:1fr}.rush-map-layout{grid-template-columns:1fr}.rush-map-scene{min-height:390px}.rush-state-panel{min-height:0}.rush-state-list{max-height:260px}.rush-page-heading{align-items:start}.rush-progress{min-width:112px}.naija-rush{margin:-5px;padding:12px}.rush-race-stage{height:65vh;min-height:440px}}
 @media(max-width:520px){.rush-header{gap:8px}.rush-logo>span{width:35px;height:35px}.rush-logo b{font-size:11px}.rush-pill{font-size:7px;padding:7px}.rush-hero{padding:18px}.rush-hero h1{font-size:35px}.rush-hero-stats{gap:15px}.rush-hero-stats b{font-size:17px}.rush-track-art{height:95px}.rush-track-info{padding:10px}.rush-track-info>b{font-size:10px}.rush-page-heading{flex-direction:column}.rush-progress{width:100%}.rush-map-scene{min-height:330px}.rush-race-stage{height:62vh;min-height:420px}.rush-steering button{width:48px;height:49px}.rush-action-controls{gap:5px}.rush-action-controls button{min-width:47px;padding:0 8px;height:44px}.rush-race-bottom{gap:7px}.rush-race-bottom>span{font-size:7px}.rush-race-toolbar{align-items:start}.rush-result-stats{grid-template-columns:1fr}.rush-results{margin:20px auto}.rush-results-actions{flex-direction:column}.rush-results-actions button{width:100%}}
+
+
+/* Prominent home-screen entry point for Naija Rush. */
+.game-home-launch{width:100%;display:flex;align-items:center;gap:14px;text-align:left;margin:0 0 18px;padding:16px 18px;border:1px solid rgba(168,85,247,.38);border-radius:18px;background:linear-gradient(110deg,rgba(126,34,206,.14),rgba(168,85,247,.06));color:var(--text,#f8fafc);cursor:pointer;box-shadow:0 8px 24px rgba(88,28,135,.08)}
+.game-home-launch>svg{flex:0 0 auto;color:#a855f7}
+.game-home-launch span:nth-child(2){display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}
+.game-home-launch b{font-size:15px}
+.game-home-launch small{font-size:12px;opacity:.75}
+.game-home-arrow{font-weight:700;font-size:13px;color:#a855f7;white-space:nowrap}
+@media(max-width:520px){.game-home-launch{gap:10px;padding:13px 12px}.game-home-launch small{font-size:11px}.game-home-arrow{font-size:12px}}
