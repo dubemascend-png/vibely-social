@@ -9,7 +9,7 @@ This matrix describes the intended result from the seeded permission arrays and 
 | Reveal email/phone | Allow only with explicit users.pii.reveal | Deny by default | Deny | Deny | Deny | Deny | Deny | Deny | Deny |
 | Temporarily restrict users | Allow | Allow | Allow | Allow | Allow | Deny | Deny | Deny | Deny |
 | Permanently ban users | Allow | Allow | Allow | Allow | Deny | Deny | Deny | Deny | Deny |
-| Soft-delete account | Allow | Deny unless explicitly granted users.delete | Allow via users.manage | Deny | Deny | Deny | Deny | Deny | Deny |
+| Soft-delete account | Allow | Allow via users.manage | Allow via users.manage | Deny | Deny | Deny | Deny | Deny | Deny |
 | Review reports / cases | Allow | Allow | Allow | Allow | Allow | Deny | Deny | Deny | Deny |
 | Review appeals | Allow | Allow | Allow | Allow | Deny | Deny | Deny | Deny | Deny |
 | Decide own original appeal | Deny | Deny | Deny | Deny | Deny | Deny | Deny | Deny | Deny |
