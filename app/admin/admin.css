@@ -107,3 +107,5 @@
  .ac-command-form .ac-primary{margin-left:auto}
  .ac-command-foot{flex-wrap:wrap}
 }
+
+.ac-trend-pending{display:block;margin-top:9px;color:var(--muted);font-size:9px;line-height:1.4}
