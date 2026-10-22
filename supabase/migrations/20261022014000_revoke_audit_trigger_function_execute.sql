@@ -1,0 +1,1 @@
+revoke all on function public.admin_audit_row_change() from public,anon,authenticated;
