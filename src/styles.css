@@ -692,3 +692,25 @@ html[data-theme="dark"] .auth-password-toggle:hover{background:#392b54;color:#e9
 .sidebar .sidebottom{flex:0 0 auto}
 @media(min-width:761px){.sidebar{height:calc(100dvh - 110px);max-height:calc(100dvh - 110px);overflow-y:auto;overflow-x:hidden}.sidebar .sidebottom{margin-top:auto}}
 @media(max-width:760px){.sidebar{top:62px;bottom:0;height:calc(100dvh - 62px);max-height:calc(100dvh - 62px);overflow-x:hidden;overflow-y:scroll;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;padding-bottom:calc(28px + env(safe-area-inset-bottom))}.sidebar.show{display:flex;align-items:stretch}.sidebar nav{padding-bottom:8px}.sidebar .createjump{margin-bottom:4px}.sidebar .sidebottom{margin-top:25px;padding-bottom:12px}}
+
+
+/* Account hibernation and irreversible deletion controls */
+.account-controls{margin:26px 0;padding:22px;border:1px solid var(--line,#e7e2f2);border-radius:20px;background:var(--surface,#fff);display:grid;gap:16px}
+.account-controls h2{margin:6px 0;font-size:1.2rem}
+.account-controls p{margin:0;color:var(--muted,#777);line-height:1.6;max-width:680px}
+.account-control-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.account-control-actions button,.account-state-secondary{border:1px solid var(--line,#ded7ec);border-radius:12px;padding:11px 15px;background:var(--surface,#fff);color:inherit;font-weight:650;cursor:pointer}
+.account-control-actions button:disabled{opacity:.5;cursor:not-allowed}
+.account-control-actions .account-delete-button{border-color:#e8a7b0;color:#b42336;background:#fff8f8}
+.delete-account-confirmation{border-top:1px solid var(--line,#e7e2f2);padding-top:16px;display:grid;gap:12px}
+.delete-account-confirmation label{display:grid;gap:8px;font-size:.92rem}
+.delete-account-confirmation input{width:100%;box-sizing:border-box;border:1px solid var(--line,#ded7ec);border-radius:10px;padding:12px;background:var(--surface,#fff);color:inherit;font:inherit}
+.delete-account-confirmation small{color:var(--muted,#777);max-width:420px;line-height:1.5}
+.account-state-page{min-height:100dvh;display:grid;place-items:center;padding:24px;box-sizing:border-box;background:radial-gradient(ellipse at top,#eee8ff 0%,var(--bg,#faf9ff) 56%)}
+.account-state-card{width:min(100%,480px);box-sizing:border-box;padding:clamp(24px,6vw,42px);border:1px solid var(--line,#e4dcf3);border-radius:26px;background:var(--surface,#fff);box-shadow:0 24px 80px #4a328a12;display:flex;flex-direction:column;align-items:flex-start;gap:14px}
+.account-state-icon{width:58px;height:58px;display:grid;place-items:center;border-radius:18px;background:#eee8ff;color:#7257ff;font-size:30px}
+.account-state-card h1{margin:0;font-size:clamp(1.8rem,6vw,2.5rem);line-height:1.1}
+.account-state-card p{margin:0 0 6px;color:var(--muted,#777);line-height:1.65}
+.account-state-card .primary{width:100%;justify-content:center}
+.account-state-secondary{width:100%;background:transparent}
+@media(max-width:600px){.account-controls{padding:16px;border-radius:16px}.account-control-actions{align-items:stretch}.account-control-actions button{flex:1 1 100%}}
