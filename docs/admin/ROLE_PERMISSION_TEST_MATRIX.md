@@ -44,3 +44,26 @@ This matrix describes the intended result from the seeded permission arrays and 
 - Two-person approval for high-risk bans, bulk deletes, and exports is not implemented yet.
 - The console has live aggregate analytics; time-series charts and retention cohorts require a complete event pipeline.
 - Community management, content takedowns, scheduled announcements, and support response templates need additional audited workflows.
+
+
+## Upgrade branch security changes (2026-10-22)
+
+The applied Supabase migration `20261022060048_admin_role_hierarchy_and_append_only_audit.sql` now:
+- Enforces role hierarchy and permission-subset checks in `admin_assign_role` on the server.
+- Rejects self-role changes and attempts to change an Owner or act on an equal/higher-ranked role.
+- Rejects assigning permissions the acting Super Administrator does not hold.
+- Keeps at least two active Owner/Super Administrator memberships when demoting a top-level membership.
+- Revokes authenticated execution of the generic caller-controlled `admin_record_audit` RPC; trusted service-role code retains execution.
+- Blocks UPDATE/DELETE of audit rows with a database trigger and revokes UPDATE/DELETE/TRUNCATE table grants from API roles.
+
+### Verification performed
+- Confirmed in Supabase that `admin_assign_role` remains executable by authenticated users (intentional: its body performs server-side role checks).
+- Confirmed `admin_record_audit` is no longer executable by authenticated users.
+- Confirmed the append-only trigger exists for both UPDATE and DELETE.
+- Confirmed the migration is recorded in Supabase as version `20261022060048`.
+
+### Still required before production staff onboarding
+- Execute positive and negative role-assignment tests using separate authenticated accounts for Owner, Super Administrator, Admin, Senior Moderator and Moderator.
+- Verify direct RPC attempts are denied for self-promotion, equal/higher role targets, assigning permissions not held, and demotion of the second remaining top-level admin.
+- Verify UPDATE, DELETE and TRUNCATE against the audit table are denied for API roles.
+- Mandatory 2FA, invite-email delivery, session revocation and two-person approvals remain separate implementation items; do not treat them as completed.
