@@ -1,6 +1,5 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -11,24 +10,29 @@ function response(body: unknown, status = 200) {
 }
 async function collectUserFiles(admin: ReturnType<typeof createClient>, bucket: string, prefix: string): Promise<string[]> {
   const files: string[] = [];
-  async function walk(folder: string): Promise<void> {
-    let offset = 0;
-    while (true) {
-      const { data, error } = await admin.storage.from(bucket).list(folder, { limit: 100, offset, sortBy: { column: "name", order: "asc" } });
-      if (error) throw new Error("Could not prepare account media deletion.");
-      if (!data?.length) break;
-      for (const item of data) {
-        const path = folder ? folder + "/" + item.name : item.name;
-        if (item.id === null) await walk(path);
-        else files.push(path);
-      }
-      if (data.length < 100) break;
-      offset += data.length;
+  async function walk(path: string) {
+    const { data, error } = await admin.storage.from(bucket).list(path, { limit: 1000 });
+    if (error) throw new Error("Could not check uploaded media. Your account has not been deleted; please retry.");
+    for (const item of data || []) {
+      const fullPath = path ? path + "/" + item.name : item.name;
+      if (item.id === null) await walk(fullPath);
+      else files.push(fullPath);
     }
   }
   await walk(prefix);
   return files;
 }
+const reasons = new Set([
+  "I no longer use Vibe.ly",
+  "I have privacy or security concerns",
+  "I’m receiving too many notifications",
+  "I’m experiencing technical problems",
+  "I’m not finding the content or people I want",
+  "I’m concerned about harassment or inappropriate content",
+  "I’m switching to another platform",
+  "I created another account",
+  "Other",
+]);
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return response({ error: "Method not allowed." }, 405);
@@ -41,11 +45,16 @@ Deno.serve(async (req: Request) => {
   const caller = createClient(url, anonKey, { global: { headers: { Authorization: authHeader } }, auth: { persistSession: false } });
   const { data: { user }, error: authError } = await caller.auth.getUser();
   if (authError || !user) return response({ error: "Your session has expired. Please sign in again." }, 401);
-  let confirmation: string;
-  try { confirmation = (await req.json()).confirmation; } catch { return response({ error: "Confirm account deletion to continue." }, 400); }
-  if (confirmation !== "DELETE MY ACCOUNT") return response({ error: "Type DELETE MY ACCOUNT to confirm." }, 400);
+  let body: { confirmation?: unknown; reason?: unknown; details?: unknown };
+  try { body = await req.json(); } catch { return response({ error: "Confirm account deletion to continue." }, 400); }
+  if (body.confirmation !== "DELETE MY ACCOUNT") return response({ error: "Type DELETE MY ACCOUNT to confirm." }, 400);
+  if (typeof body.reason !== "string" || !reasons.has(body.reason)) return response({ error: "Choose a reason for leaving before deleting your account." }, 400);
+  const details = typeof body.details === "string" ? body.details.trim().slice(0, 2000) : "";
   const admin = createClient(url, serviceRoleKey, { auth: { persistSession: false, autoRefreshToken: false } });
   try {
+    // Anonymous feedback only: do not retain the account ID or email with this survey response.
+    const { error: feedbackError } = await admin.from("account_deletion_feedback").insert({ reason: body.reason, details: details || null });
+    if (feedbackError) console.error("Could not save optional account deletion feedback:", feedbackError.message);
     for (const bucket of ["vibely-posts", "vibely-avatars"]) {
       const files = await collectUserFiles(admin, bucket, user.id);
       for (let i = 0; i < files.length; i += 100) {
