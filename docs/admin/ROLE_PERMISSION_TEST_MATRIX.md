@@ -67,3 +67,7 @@ The applied Supabase migration `20261022060048_admin_role_hierarchy_and_append_o
 - Verify direct RPC attempts are denied for self-promotion, equal/higher role targets, assigning permissions not held, and demotion of the second remaining top-level admin.
 - Verify UPDATE, DELETE and TRUNCATE against the audit table are denied for API roles.
 - Mandatory 2FA, invite-email delivery, session revocation and two-person approvals remain separate implementation items; do not treat them as completed.
+
+
+### Production safeguard finding
+A live schema check currently finds only **one active Owner/Super Administrator membership**. The database guard is now installed to prevent demotion/deletion from reducing the count further, but it cannot create the second administrator by itself. Before onboarding additional staff or considering role administration complete, provision a second trusted top-level administrator through a verified, audited process. Invitation email and mandatory 2FA are not yet implemented, so do not use an ad-hoc client-side insert to bypass that workflow.
