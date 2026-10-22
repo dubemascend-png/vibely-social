@@ -151,3 +151,12 @@
 .ac-mfa-spinner{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px}
 .ac-mfa-signout{align-self:center;border:0;background:transparent;color:var(--muted);font-size:11px;padding:8px;cursor:pointer}
 .ac-mfa-signout:hover{color:var(--text)}
+
+
+/* Fix: keep the full admin navigation reachable on short screens. */
+.ac-sidebar{height:100vh;height:100dvh;max-height:100dvh;overflow:hidden;box-sizing:border-box}
+.ac-sidebar>nav{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--line) transparent;padding:0 2px 12px}
+.ac-sidebar>nav::-webkit-scrollbar{width:6px}
+.ac-sidebar>nav::-webkit-scrollbar-thumb{background:var(--line);border-radius:99px}
+.ac-side-bottom{flex:0 0 auto}
+.ac-brand,.ac-workspace{flex-shrink:0}
