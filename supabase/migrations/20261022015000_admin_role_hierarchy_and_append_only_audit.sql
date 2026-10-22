@@ -154,3 +154,6 @@ drop trigger if exists admin_audit_log_append_only on public.admin_audit_log;
 create trigger admin_audit_log_append_only
 before update or delete on public.admin_audit_log
 for each row execute function public.prevent_admin_audit_mutation();
+
+-- Remove table-level mutation privileges as a second line of defense (including TRUNCATE).
+revoke update, delete, truncate on table public.admin_audit_log from public, anon, authenticated, service_role;
