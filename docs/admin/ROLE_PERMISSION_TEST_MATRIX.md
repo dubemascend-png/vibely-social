@@ -71,3 +71,17 @@ The applied Supabase migration `20261022060048_admin_role_hierarchy_and_append_o
 
 ### Production safeguard finding
 A live schema check currently finds only **one active Owner/Super Administrator membership**. The database guard is now installed to prevent demotion/deletion from reducing the count further, but it cannot create the second administrator by itself. Before onboarding additional staff or considering role administration complete, provision a second trusted top-level administrator through a verified, audited process. Invitation email and mandatory 2FA are not yet implemented, so do not use an ad-hoc client-side insert to bypass that workflow.
+
+
+## MFA enforcement rollout status
+
+The upgrade branch now includes an authenticator-app (TOTP) setup and challenge gate in the admin UI. The companion migration `20261022060500_require_mfa_for_admin_operations.sql` was syntax-checked inside a transaction that was rolled back; it has **not** been applied to the live project because the new UI must be deployed first to avoid locking the existing Owner out before enrollment.
+
+Before applying that migration:
+1. Deploy the UI version containing the TOTP setup/challenge gate.
+2. Sign in as the current Owner, enroll and verify an authenticator app, and confirm the session reaches AAL2.
+3. Confirm the Owner can load the dashboard and role page after MFA.
+4. Apply the migration, then test that direct privileged RPC calls and table reads fail at AAL1 and succeed at AAL2 only when the role grants permission.
+5. Verify a second trusted top-level administrator can enroll before onboarding the wider team.
+
+The database currently has one active top-level administrator. The minimum-admin trigger protects against further demotion/deletion, but the second account still must be provisioned through a verified invitation/bootstrap process.
