@@ -87,6 +87,10 @@ The applied Supabase migrations for the admin expansion are:
 - `20261022006000_moderation_case_ingestion.sql`: merges reports on the same content/account into moderation cases, sets severity/SLA, and captures report snapshots.
 - `20261022007000_admin_content_read_policies.sql`: permission-checked admin read policies for content and communities.
 - `20261022008000_restrict_sensitive_report_evidence.sql`: restricts evidence-table access to the dedicated `reports.evidence.view` permission.
+- `20261022009000_admin_operational_metrics.sql`: adds Lagos-day signups, DAU/MAU, active enforcement, breached SLA, critical case, and failed-upload metrics to the server-checked dashboard summary.
+- `20261022010000_action_specific_moderation_permissions.sql`: enforces action-specific permissions and prevents admins acting on peers or higher-ranked administrators.
+- `20261022011000_mask_user_pii_and_audit_reveals.sql` and `20261022012000_require_reason_for_pii_reveal.sql`: mask contact details by default and require explicit permission plus a reason for logged reveal.
+- [Admin role permission test matrix](docs/admin/ROLE_PERMISSION_TEST_MATRIX.md): intended allow/deny matrix and manual test checklist.
 
 The current console uses live database reads for content, Vibes, communities, reports/cases, appeals, policy records, verification requests, message-volume counts, support tickets, announcements, feature flags, roles, and audit history. The Messages Safety page intentionally shows counts only, never private message bodies.
 
