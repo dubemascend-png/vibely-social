@@ -152,7 +152,7 @@ export default function NaijaRush({ onExit }: { onExit:()=>void }) {
     };
     void init();
     return()=>{cancelled=true;window.removeEventListener('resize',resize);if(renderer){renderer.setAnimationLoop(null);renderer.dispose()}if(scene){scene.traverse(o=>{if(o instanceof THREE.Mesh){o.geometry.dispose();const m=o.material;if(Array.isArray(m))m.forEach(x=>x.dispose());else m.dispose()}})}if(raf)cancelAnimationFrame(raf);container.replaceChildren()};
-  },[mode,quality,selectedTrack.laps,countdown]);
+  },[mode,quality,selectedTrack.laps]);
   useEffect(()=>{
     if(mode!=='map'||!mapMount.current)return;
     let cancelled=false,renderer:THREE.WebGLRenderer|undefined,scene:THREE.Scene|undefined,raf=0;
