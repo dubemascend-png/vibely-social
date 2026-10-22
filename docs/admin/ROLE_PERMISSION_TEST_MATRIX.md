@@ -44,3 +44,44 @@ This matrix describes the intended result from the seeded permission arrays and 
 - Two-person approval for high-risk bans, bulk deletes, and exports is not implemented yet.
 - The console has live aggregate analytics; time-series charts and retention cohorts require a complete event pipeline.
 - Community management, content takedowns, scheduled announcements, and support response templates need additional audited workflows.
+
+
+## Upgrade branch security changes (2026-10-22)
+
+The applied Supabase migration `20261022060048_admin_role_hierarchy_and_append_only_audit.sql` now:
+- Enforces role hierarchy and permission-subset checks in `admin_assign_role` on the server.
+- Rejects self-role changes and attempts to change an Owner or act on an equal/higher-ranked role.
+- Rejects assigning permissions the acting Super Administrator does not hold.
+- Keeps at least two active Owner/Super Administrator memberships when demoting a top-level membership.
+- Revokes authenticated execution of the generic caller-controlled `admin_record_audit` RPC; trusted service-role code retains execution.
+- Blocks UPDATE/DELETE of audit rows with a database trigger and revokes UPDATE/DELETE/TRUNCATE table grants from API roles.
+
+### Verification performed
+- Confirmed in Supabase that `admin_assign_role` remains executable by authenticated users (intentional: its body performs server-side role checks).
+- Confirmed `admin_record_audit` is no longer executable by authenticated users.
+- Confirmed the append-only trigger exists for both UPDATE and DELETE.
+- Confirmed the migration is recorded in Supabase as version `20261022060048`.
+
+### Still required before production staff onboarding
+- Execute positive and negative role-assignment tests using separate authenticated accounts for Owner, Super Administrator, Admin, Senior Moderator and Moderator.
+- Verify direct RPC attempts are denied for self-promotion, equal/higher role targets, assigning permissions not held, and demotion of the second remaining top-level admin.
+- Verify UPDATE, DELETE and TRUNCATE against the audit table are denied for API roles.
+- Mandatory 2FA, invite-email delivery, session revocation and two-person approvals remain separate implementation items; do not treat them as completed.
+
+
+### Production safeguard finding
+A live schema check currently finds only **one active Owner/Super Administrator membership**. The database guard is now installed to prevent demotion/deletion from reducing the count further, but it cannot create the second administrator by itself. Before onboarding additional staff or considering role administration complete, provision a second trusted top-level administrator through a verified, audited process. Invitation email and mandatory 2FA are not yet implemented, so do not use an ad-hoc client-side insert to bypass that workflow.
+
+
+## MFA enforcement rollout status
+
+The upgrade branch now includes an authenticator-app (TOTP) setup and challenge gate in the admin UI. The companion migration `20261022060500_require_mfa_for_admin_operations.sql` was syntax-checked inside a transaction that was rolled back; it has **not** been applied to the live project because the new UI must be deployed first to avoid locking the existing Owner out before enrollment.
+
+Before applying that migration:
+1. Deploy the UI version containing the TOTP setup/challenge gate.
+2. Sign in as the current Owner, enroll and verify an authenticator app, and confirm the session reaches AAL2.
+3. Confirm the Owner can load the dashboard and role page after MFA.
+4. Apply the migration, then test that direct privileged RPC calls and table reads fail at AAL1 and succeed at AAL2 only when the role grants permission.
+5. Verify a second trusted top-level administrator can enroll before onboarding the wider team.
+
+The database currently has one active top-level administrator. The minimum-admin trigger protects against further demotion/deletion, but the second account still must be provisioned through a verified invitation/bootstrap process.
